@@ -7,7 +7,8 @@
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
     body{font-family:system-ui,sans-serif;background:#000;color:#fff;min-height:100vh;padding:.4rem;display:flex;align-items:center;justify-content:center}
-    .card{background:#fff;color:#000;padding:.4rem;border:1px solid #000;border-radius:5px;width:100%;text-align:center;box-shadow:0 2px 5px rgba(0,0,0,.3)}
+    .card{background:#fff;color:#000;padding:.3rem;border:1px solid #000;border-radius:5px;width:100%;height:calc(100vh - 0.8rem);text-align:center;box-shadow:0 2px 5px rgba(0,0,0,.3);display:flex;flex-direction:column;justify-content:space-between}
+    .main-content{flex-grow:1;display:flex;flex-direction:column}
     h2{font-size:1rem;font-weight:700;margin-bottom:.15rem}
     .prize{font-size:1.2rem;font-weight:800;margin:.15rem 0}
     .info{font-size:.65rem;margin-bottom:.5rem;color:#333}
@@ -39,47 +40,49 @@
     .countdown{font-weight:600}
     @keyframes openGift{0%{transform:scale(0);opacity:0}50%{transform:scale(1.2);opacity:1}100%{transform:scale(1);opacity:1}}
     @media (max-width:480px){.card{padding:.3rem}h2{font-size:.85rem}.prize{font-size:1rem}.money{font-size:1rem}.ticket-grid{grid-template-columns:repeat(auto-fit,minmax(25px,1fr))}}
-    @media (min-width:768px){.card{padding:.8rem;max-width:350px}}
+    @media (min-width:768px){.card{padding:.8rem;max-width:350px;height:auto}}
   </style>
 </head>
 <body>
   <div class="card">
-    <div class="money">💰</div>
-    <h2>Rifa Semanal</h2>
-    <div class="prize">1.000 MZN</div>
-    <p class="info">20 MZN por bilhete<br>Sorteio: Domingo 23:59</p>
-    <div class="details">
-      <ul>
-        <li>Bilhetes: 300</li>
-        <li>Prêmio via M-Pesa</li>
-        <li>Sorteio: @rifa_mz</li>
-        <li>Resultado nesta página</li>
-      </ul>
-    </div>
-    <div class="field">
-      <label>Número (1-300)</label>
-      <div class="ticket-grid" id="ticketGrid"></div>
-      <input type="hidden" id="selectedTicket" required>
-    </div>
-    <form id="rifaForm">
-      <div class="field">
-        <label>Nome</label>
-        <input id="name" placeholder="João Silva" required>
+    <div class="main-content">
+      <div class="money">💰</div>
+      <h2>Rifa Semanal</h2>
+      <div class="prize">1.000 MZN</div>
+      <p class="info">20 MZN por bilhete<br>Sorteio: Domingo 23:59</p>
+      <div class="details">
+        <ul>
+          <li>Bilhetes: 300</li>
+          <li>Prêmio via M-Pesa</li>
+          <li>Sorteio: @rifa_mz</li>
+          <li>Resultado nesta página</li>
+        </ul>
       </div>
       <div class="field">
-        <label>Bilhetes</label>
-        <select id="quantity">
-          <option value="1">1 (20 MZN)</option>
-          <option value="2">2 (40 MZN)</option>
-          <option value="5">5 (100 MZN)</option>
-          <option value="10">10 (200 MZN)</option>
-        </select>
+        <label>Número (1-300)</label>
+        <div class="ticket-grid" id="ticketGrid"></div>
+        <input type="hidden" id="selectedTicket" required>
       </div>
-      <button type="submit" id="buyBtn">Comprar</button>
-    </form>
-    <div id="status" class="status"></div>
-    <div class="last-result">Última Rifa: Bilhete #42 Assunto: Prêmio em Dinheiro via M-Pesa</div>
-    <div class="countdown" id="countdown">Aguardando Resultados: --</div>
+      <form id="rifaForm">
+        <div class="field">
+          <label>Nome</label>
+          <input id="name" placeholder="João Silva" required>
+        </div>
+        <div class="field">
+          <label>Bilhetes</label>
+          <select id="quantity">
+            <option value="1">1 (20 MZN)</option>
+            <option value="2">2 (40 MZN)</option>
+            <option value="5">5 (100 MZN)</option>
+            <option value="10">10 (200 MZN)</option>
+          </select>
+        </div>
+        <button type="submit" id="buyBtn">Comprar</button>
+      </form>
+      <div id="status" class="status"></div>
+      <div class="last-result">Última Rifa: Bilhete #42 Assunto: Prêmio em Dinheiro via M-Pesa</div>
+      <div class="countdown" id="countdown">Aguardando Resultados: --</div>
+    </div>
     <div class="footer">Suporte: #rifa_mz</div>
   </div>
   <div class="gift-box" id="giftBox">
