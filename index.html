@@ -4,44 +4,46 @@
   <meta charset="utf-8">
   <title>Rifa Semanal — 1.000 MZN</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:system-ui,sans-serif;background:#000;color:#fff;min-height:100vh;padding:.5rem;display:flex;align-items:center;justify-content:center}
-    .card{background:#fff;color:#000;padding:.5rem;border:1px solid #000;border-radius:5px;width:100%;height:calc(100vh - 1rem);text-align:center;box-shadow:0 2px 5px rgba(0,0,0,.3);display:flex;flex-direction:column;justify-content:space-between}
+    body{font-family:'Poppins',sans-serif;background:#000;color:#fff;min-height:100vh;padding:.5rem;display:flex;align-items:center;justify-content:center;font-weight:400}
+    .card{background:#fff;color:#000;padding:.6rem;border:1px solid #000;border-radius:5px;width:100%;height:calc(100vh - 1rem);text-align:center;box-shadow:0 2px 5px rgba(0,0,0,.3);display:flex;flex-direction:column;justify-content:space-between}
     .main-content{flex-grow:1;display:flex;flex-direction:column}
-    h2{font-size:1.2rem;font-weight:700;margin-bottom:.15rem}
-    .prize{font-size:1.4rem;font-weight:800;margin:.15rem 0}
-    .info{font-size:.75rem;margin-bottom:.5rem;color:#333}
-    .details{background:#f9f9f9;padding:.4rem;border-radius:3px;margin-bottom:.5rem;font-size:.7rem;border:1px solid #ddd}
+    h2{font-size:1.5rem;font-weight:900;margin-bottom:.15rem}
+    .prize{font-size:1.8rem;font-weight:900;margin:.15rem 0}
+    .info{font-size:.85rem;margin-bottom:.5rem;color:#333;font-weight:400}
+    .details{background:#f9f9f9;padding:.5rem;border-radius:3px;margin-bottom:.5rem;font-size:.8rem;border:1px solid #ddd;font-weight:500}
     .details ul{list-style:none}
     .details li{margin-bottom:.15rem;padding-left:.7rem}
     .details li:before{content:"✓";position:absolute;left:.15rem}
-    .field{margin-bottom:.5rem;text-align:left}
-    label{display:block;font-size:.65rem;font-weight:500;margin-bottom:.1rem}
-    input,select{width:100%;padding:.3rem;border:1px solid #000;border-radius:2px;font-size:.7rem}
+    .field{margin-bottom:.6rem;text-align:left}
+    label{display:block;font-size:.75rem;font-weight:600;margin-bottom:.1rem}
+    input,select{width:100%;padding:.3rem;border:1px solid #000;border-radius:2px;font-size:.8rem;font-weight:400}
     input:focus,select:focus{outline:0;border-color:#333;box-shadow:0 0 0 1px rgba(0,0,0,.2)}
-    button{width:100%;padding:.4rem;background:#000;color:#fff;border:none;border-radius:2px;font-size:.7rem;font-weight:600;cursor:pointer}
+    button{width:100%;padding:.5rem;background:#000;color:#fff;border:none;border-radius:2px;font-size:.8rem;font-weight:700;cursor:pointer}
     button:hover:not(:disabled){background:#333}
     button:disabled{opacity:.5;cursor:not-allowed}
-    .status{margin-top:.6rem;padding:.4rem;border-radius:2px;font-size:.65rem;border:1px solid transparent}
+    .status{margin-top:.7rem;padding:.5rem;border-radius:2px;font-size:.75rem;border:1px solid transparent;font-weight:500}
     .status.loading,.status.success,.status.error{background:#fff;border-color:#000}
-    .money{font-size:1.5rem;margin-bottom:.15rem}
-    .footer{margin-top:.6rem;font-size:.65rem;color:#666}
-    .ticket-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(35px,1fr));gap:3px;margin-bottom:.5rem;max-height:100px;overflow-y:auto;padding:.3rem;background:#f9f9f9;border-radius:3px;border:1px solid #ddd}
-    .ticket-btn{padding:.15rem;background:#fff;border:1px solid #000;border-radius:2px;font-size:.7rem;cursor:pointer}
+    .money{font-size:2rem;margin-bottom:.15rem;font-weight:900}
+    .footer{margin-top:.7rem;font-size:.75rem;color:#666;font-weight:400}
+    .ticket-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(40px,1fr));gap:4px;margin-bottom:.5rem;max-height:120px;overflow-y:auto;padding:.4rem;background:#f9f9f9;border-radius:3px;border:1px solid #ddd}
+    .ticket-btn{padding:.15rem;background:#fff;border:1px solid #000;border-radius:2px;font-size:.8rem;cursor:pointer;font-weight:700}
     .ticket-btn:hover,.ticket-btn.selected{background:#000;color:#fff}
-    .ticket-btn:disabled{background:#ddd;color:#666;cursor:not-allowed}
+    .ticket-btn:disabled{background:#ddd;color:#666;cursor:not-allowed;font-weight:500}
     .gift-box{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center;z-index:1000}
     .gift-box.active{display:flex}
-    .gift-content{background:#fff;padding:.6rem;border-radius:4px;text-align:center;animation:openGift .6s ease forwards}
-    .gift-content .ticket-code{font-size:1rem;font-weight:700;margin:.5rem 0}
-    .gift-content p{font-size:.7rem}
-    .close-gift{position:absolute;top:4px;right:4px;background:0;border:0;font-size:.8rem;cursor:pointer}
-    .last-result,.countdown{background:#f9f9f9;padding:.4rem;border-radius:3px;margin-top:.6rem;font-size:.7rem;border:1px solid #ddd;color:#000}
-    .countdown{font-weight:600}
+    .gift-content{background:#fff;padding:.7rem;border-radius:4px;text-align:center;animation:openGift .6s ease forwards}
+    .gift-content .ticket-code{font-size:1.2rem;font-weight:900;margin:.5rem 0}
+    .gift-content p{font-size:.8rem;font-weight:600}
+    .gift-content .emoji{font-size:2rem}
+    .close-gift{position:absolute;top:4px;right:4px;background:0;border:0;font-size:.9rem;cursor:pointer;font-weight:700}
+    .last-result,.countdown{background:#f9f9f9;padding:.5rem;border-radius:3px;margin-top:.7rem;font-size:.8rem;border:1px solid #ddd;color:#000;font-weight:500}
+    .countdown{font-weight:700}
     @keyframes openGift{0%{transform:scale(0);opacity:0}50%{transform:scale(1.3);opacity:1}100%{transform:scale(1);opacity:1}}
-    @media (max-width:480px){.card{padding:.5rem}h2{font-size:1rem}.prize{font-size:1.2rem}.money{font-size:1.3rem}.ticket-grid{grid-template-columns:repeat(auto-fit,minmax(30px,1fr))}}
-    @media (min-width:768px){.card{padding:1rem;max-width:350px;height:auto}}
+    @media (max-width:480px){.card{padding:.6rem}h2{font-size:1.3rem}.prize{font-size:1.5rem}.money{font-size:1.7rem}.ticket-grid{grid-template-columns:repeat(auto-fit,minmax(35px,1fr))}}
+    @media (min-width:768px){.card{padding:1.2rem;max-width:350px;height:auto}}
   </style>
 </head>
 <body>
@@ -89,13 +91,13 @@
   <div class="gift-box" id="giftBox">
     <div class="gift-content">
       <button class="close-gift" id="closeGift">✕</button>
-      <div>🎁</div>
+      <div class="emoji">🎁</div>
       <div class="ticket-code" id="ticketCode"></div>
       <p>Número reservado!</p>
     </div>
   </div>
 <script>
-let takenTickets=[2,5,10,150];const totalTickets=300,ticketGrid=document.getElementById("ticketGrid"),selectedTicketInput=document.getElementById("selectedTicket"),giftBox=document.getElementById("giftBox"),ticketCode=document.getElementById("ticketCode"),closeGift=document.getElementById("closeGift"),countdownEl=document.getElementById("countdown");function generateTicketGrid(){ticketGrid.innerHTML="";for(let t=1;t<=totalTickets;t++){const e=document.createElement("button");e.className="ticket-btn",e.textContent=t,e.dataset.ticket=t,takenTickets.includes(t)?e.disabled=!0:e.addEventListener("click",()=>selectTicket(t)),ticketGrid.appendChild(e)}}function selectTicket(t){const e=ticketGrid.querySelector(".ticket-btn.selected");e&&e.classList.remove("selected");ticketGrid.querySelector(`[data-ticket="${t}"]`).classList.add("selected"),selectedTicketInput.value=t,ticketCode.textContent=`Bilhete #${t}`,giftBox.classList.add("active")}function updateCountdown(){const t=new Date(),e=t.getDay(),i=7-e+(e===0?0:7),n=new Date(t.getFullYear(),t.getMonth(),t.getDate()+i,23,59,0),s=(n-t)/1e3,a=Math.floor(s/86400),c=Math.floor(s%86400/3600),l=Math.floor(s%3600/60),o=Math.floor(s%60);countdownEl.textContent=`Aguardando Resultados: ${a}d ${c}h ${l}m ${o}s`,s<=0&&setTimeout(updateCountdown,1e3)}closeGift.addEventListener("click",()=>{giftBox.classList.remove("active")}),generateTicketGrid(),updateCountdown(),setInterval(updateCountdown,1e3),document.getElementById("rifaForm").addEventListener("submit",async t=>{t.preventDefault();const e=document.getElementById("buyBtn"),i=document.getElementById("status"),n=document.getElementById("name").value.trim(),c=parseInt(document.getElementById("quantity").value),l=selectedTicketInput.value;if(!n||!l)return i.textContent="Nome e número obrigatórios.",void(i.className="status error");e.disabled=!0,e.textContent="Processando...",i.textContent="Iniciando pagamento...",i.className="status loading";try{const t=await fetch("/api/create-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:n,qty:c,ticket:l,amount:20*c})}),s=await t.json();if(!t.ok)throw new Error(s.message||"Erro no pagamento");i.innerHTML=s.checkout_url?`Pagar: <a href="${s.checkout_url}" target="_blank" style="color:#000;font-weight:600">M-Pesa</a>`:"Aguarde SMS (*150*00#).",i.className="status success",pollPayment(s.payment_id,l)}catch(t){i.textContent="Erro: "+t.message,i.className="status error"}finally{e.disabled=!1,e.textContent="Comprar"}});async function pollPayment(t,e){let i=0;const n=setInterval(async()=>{if(i++,i>20)return void clearInterval(n);try{const s=await fetch(`/api/payment-status/${t}`),a=await s.json();a.status==="confirmed"&&(takenTickets.push(parseInt(e)),generateTicketGrid(),clearInterval(n),document.getElementById("status").innerHTML="Confirmado!<br>Bilhetes reservados.<br>Boa sorte!",document.getElementById("status").className="status success")}catch(t){}},4e3)}
+let takenTickets=[2,5,10,150];const totalTickets=300,ticketGrid=document.getElementById("ticketGrid"),selectedTicketInput=document.getElementById("selectedTicket"),giftBox=document.getElementById("giftBox"),ticketCode=document.getElementById("ticketCode"),closeGift=document.getElementById("closeGift"),countdownEl=document.getElementById("countdown");function generateTicketGrid(){ticketGrid.innerHTML="";for(let t=1;t<=totalTickets;t++){const e=document.createElement("button");e.className="ticket-btn",e.textContent=t,e.dataset.ticket=t,takenTickets.includes(t)?e.disabled=!0:e.addEventListener("click",()=>selectTicket(t)),ticketGrid.appendChild(e)}}function selectTicket(t){const e=ticketGrid.querySelector(".ticket-btn.selected");e&&e.classList.remove("selected");ticketGrid.querySelector(`[data-ticket="${t}"]`).classList.add("selected"),selectedTicketInput.value=t,ticketCode.textContent=`Bilhete #${t}`,giftBox.classList.add("active")}function updateCountdown(){const t=new Date(),e=t.getDay(),i=7-e+(e===0?0:7),n=new Date(t.getFullYear(),t.getMonth(),t.getDate()+i,23,59,0),s=(n-t)/1e3,a=Math.floor(s/86400),c=Math.floor(s%86400/3600),l=Math.floor(s%3600/60),o=Math.floor(s%60);countdownEl.textContent=`Aguardando Resultados: ${a}d ${c}h ${l}m ${o}s`,s<=0&&setTimeout(updateCountdown,1e3)}closeGift.addEventListener("click",()=>{giftBox.classList.remove("active")}),generateTicketGrid(),updateCountdown(),setInterval(updateCountdown,1e3),document.getElementById("rifaForm").addEventListener("submit",async t=>{t.preventDefault();const e=document.getElementById("buyBtn"),i=document.getElementById("status"),n=document.getElementById("name").value.trim(),c=parseInt(document.getElementById("quantity").value),l=selectedTicketInput.value;if(!n||!l)return i.textContent="Nome e número obrigatórios.",void(i.className="status error");e.disabled=!0,e.textContent="Processando...",i.textContent="Iniciando pagamento...",i.className="status loading";try{const t=await fetch("/api/create-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:n,qty:c,ticket:l,amount:20*c})}),s=await t.json();if(!t.ok)throw new Error(s.message||"Erro no pagamento");i.innerHTML=s.checkout_url?`Pagar: <a href="${s.checkout_url}" target="_blank" style="color:#000;font-weight:700">M-Pesa</a>`:"Aguarde SMS (*150*00#).",i.className="status success",pollPayment(s.payment_id,l)}catch(t){i.textContent="Erro: "+t.message,i.className="status error"}finally{e.disabled=!1,e.textContent="Comprar"}});async function pollPayment(t,e){let i=0;const n=setInterval(async()=>{if(i++,i>20)return void clearInterval(n);try{const s=await fetch(`/api/payment-status/${t}`),a=await s.json();a.status==="confirmed"&&(takenTickets.push(parseInt(e)),generateTicketGrid(),clearInterval(n),document.getElementById("status").innerHTML="Confirmado!<br>Bilhetes reservados.<br>Boa sorte!",document.getElementById("status").className="status success")}catch(t){}},4e3)}
 </script>
 </body>
 </html>
