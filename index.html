@@ -1,229 +1,483 @@
-<!doctype html>
-<html lang="pt-PT">
+<!DOCTYPE html>
+<html lang="pt">
 <head>
-  <meta charset="utf-8">
-  <title>Rifa Diária — 1.000 MZN</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
-  <style>
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:'Poppins',sans-serif;background:#000;color:#fff;min-height:100vh;padding:.5rem;display:flex;align-items:center;justify-content:center;font-weight:400}
-    .card{background:#fff;color:#000;padding:.7rem;border:1px solid #000;border-radius:8px;width:100%;height:calc(100vh - 1rem);text-align:center;box-shadow:0 4px 8px rgba(0,0,0,.2);display:flex;flex-direction:column;justify-content:space-between}
-    .main-content{flex-grow:1;display:flex;flex-direction:column}
-    h2{font-size:1.5rem;font-weight:900;margin-bottom:.15rem}
-    .prize{font-size:1.8rem;font-weight:900;margin:.15rem 0}
-    .info{font-size:.9rem;margin-bottom:.5rem;color:#333;font-weight:400}
-    .details{background:#f9f9f9;padding:.5rem;border-radius:5px;margin-bottom:.5rem;font-size:.8rem;border:1px solid #ddd;font-weight:500}
-    .details ul{list-style:none}
-    .details li{margin-bottom:.15rem;padding-left:.7rem}
-    .details li:before{content:"✓";position:absolute;left:.15rem}
-    .field{margin-bottom:.7rem;text-align:left}
-    label{display:block;font-size:.75rem;font-weight:600;margin-bottom:.1rem}
-    input{width:100%;padding:.3rem;border:1px solid #000;border-radius:2px;font-size:.8rem;font-weight:400}
-    input:focus{outline:0;border-color:#333;box-shadow:0 0 0 1px rgba(0,0,0,.2)}
-    button{width:100%;padding:.5rem;background:#000;color:#fff;border:none;border-radius:2px;font-size:.8rem;font-weight:700;cursor:pointer}
-    button:hover:not(:disabled){background:#222}
-    button:disabled{opacity:.5;cursor:not-allowed}
-    .status{margin-top:.8rem;padding:.5rem;border-radius:5px;font-size:.75rem;border:1px solid transparent;font-weight:500}
-    .status.loading,.status.success,.status.error{background:#fff;border-color:#000}
-    .total-value{font-size:.8rem;font-weight:600;margin-top:.5rem;color:#000}
-    .money{font-size:2rem;margin-bottom:.15rem;font-weight:900}
-    .footer{margin-top:.8rem;font-size:.75rem;color:#666;font-weight:400}
-    .ticket-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(45px,1fr));gap:4px;margin-bottom:.5rem;max-height:120px;overflow-y:auto;padding:.4rem;background:#f9f9f9;border-radius:5px;border:1px solid #ddd}
-    .ticket-btn{padding:.15rem;background:#f5f5f5;border:2px solid #000;border-radius:2px;font-size:.8rem;cursor:pointer;font-weight:700;transition:all 0.2s}
-    .ticket-btn:hover,.ticket-btn.selected{background:#000;color:#fff}
-    .ticket-btn:disabled{background:#ddd;color:#666;cursor:not-allowed;font-weight:500}
-    .gift-box{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center;z-index:1000}
-    .gift-box.active{display:flex}
-    .gift-content{background:linear-gradient(135deg,#fff,#f0f0f0);padding:.7rem;border-radius:4px;text-align:center;animation:openGift .6s cubic-bezier(0.4,0,0.2,1) forwards}
-    .gift-content .ticket-code{font-size:1.2rem;font-weight:900;margin:.5rem 0}
-    .gift-content p{font-size:.8rem;font-weight:600}
-    .gift-content .emoji{font-size:2.5rem}
-    .close-gift{position:absolute;top:4px;right:4px;background:0;border:0;font-size:.9rem;cursor:pointer;font-weight:700}
-    .last-result,.countdown{background:#f9f9f9;padding:.5rem;border-radius:5px;margin-top:.8rem;font-size:.8rem;border:1px solid #ddd;color:#000;font-weight:500}
-    .countdown{font-weight:700}
-    @keyframes openGift{0%{transform:scale(0);opacity:0}50%{transform:scale(1.3);opacity:1}100%{transform:scale(1);opacity:1}}
-    @media (max-width:480px){.card{padding:.7rem}h2{font-size:1.3rem}.prize{font-size:1.5rem}.money{font-size:1.7rem}.ticket-grid{grid-template-columns:repeat(auto-fit,minmax(40px,1fr))}}
-    @media (min-width:768px){.card{padding:1.3rem;max-width:350px;height:auto}}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rifa Diária - Concorra a Prêmios Incríveis!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #000000;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .ticket {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .ticket.available {
+            background: white;
+            color: #000000;
+        }
+
+        .ticket.available:hover {
+            transform: scale(1.1);
+            border-color: #000000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .ticket.selected {
+            background: #000000;
+            color: white;
+            transform: scale(1.05);
+            border-color: #4b5563;
+        }
+
+        .ticket.taken {
+            background: #e5e7eb;
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #000000;
+        }
+
+        .input-field.error {
+            border-color: #ef4444;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            background: #000000;
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #1f2937;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn-primary:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .btn-secondary:hover {
+            background: #d1d5db;
+        }
+
+        @media (max-width: 640px) {
+            .ticket {
+                width: 40px;
+                height: 40px;
+                font-size: 12px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="card">
-    <div class="main-content">
-      <div class="money">💰</div>
-      <h2>Rifa Diária</h2>
-      <div class="prize">1.000 MZN</div>
-      <p class="info">20 MZN por bilhete<br>Sorteio: Hoje 23:59</p>
-      <div class="details">
-        <ul>
-          <li>Bilhetes: 300</li>
-          <li>Prêmio via M-Pesa</li>
-        </ul>
-      </div>
-      <div class="field">
-        <label>Números (1-300)</label>
-        <div class="ticket-grid" id="ticketGrid"></div>
-      </div>
-      <form id="rifaForm">
-        <div class="field">
-          <label>Nome</label>
-          <input id="name" placeholder="João Silva" required>
+    <div class="container">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-2">🎁 Rifa Diária</h1>
+            <p class="text-white text-lg">Escolha seus números da sorte e concorra!</p>
         </div>
-        <div class="total-value" id="totalValue">Total: 0 MZN (0 bilhetes)</div>
-        <button type="submit" id="buyBtn">Comprar</button>
-      </form>
-      <div id="status" class="status"></div>
-      <div class="last-result">Última Rifa: Bilhete #42 Assunto: Prêmio em Dinheiro via M-Pesa</div>
-      <div class="countdown" id="countdown">Aguardando Resultados: --</div>
+
+        <!-- Countdown -->
+        <div class="bg-white rounded-2xl shadow-2xl p-6 mb-6">
+            <div class="text-center">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">⏰ Próximo Sorteio</h2>
+                <div class="flex justify-center gap-4 text-center">
+                    <div class="bg-black text-white rounded-lg p-4 min-w-[80px]">
+                        <div class="text-3xl font-bold" id="hours">00</div>
+                        <div class="text-sm">Horas</div>
+                    </div>
+                    <div class="bg-black text-white rounded-lg p-4 min-w-[80px]">
+                        <div class="text-3xl font-bold" id="minutes">00</div>
+                        <div class="text-sm">Minutos</div>
+                    </div>
+                    <div class="bg-black text-white rounded-lg p-4 min-w-[80px]">
+                        <div class="text-3xl font-bold" id="seconds">00</div>
+                        <div class="text-sm">Segundos</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="grid md:grid-cols-3 gap-6">
+            <!-- Ticket Grid -->
+            <div class="md:col-span-2 bg-white rounded-2xl shadow-2xl p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Escolha seus números</h2>
+                <div class="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-10 gap-2" id="ticketGrid">
+                    <!-- Tickets will be generated here -->
+                </div>
+            </div>
+
+            <!-- Purchase Form -->
+            <div class="bg-white rounded-2xl shadow-2xl p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Finalizar Compra</h2>
+                
+                <div class="mb-4">
+                    <p class="text-gray-600 mb-2">Números selecionados:</p>
+                    <div class="bg-gray-100 rounded-lg p-3 min-h-[60px]">
+                        <div id="selectedNumbers" class="flex flex-wrap gap-2">
+                            <span class="text-gray-400 text-sm">Nenhum número selecionado</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2">Seu Nome *</label>
+                    <input 
+                        type="text" 
+                        id="userName" 
+                        class="input-field" 
+                        placeholder="Digite seu nome completo"
+                        required
+                    >
+                    <p id="nameError" class="text-red-500 text-sm mt-1 hidden">Por favor, digite seu nome</p>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2">Número M-Pesa *</label>
+                    <input 
+                        type="tel" 
+                        id="mpesaNumber" 
+                        class="input-field" 
+                        placeholder="84XXXXXXX ou 85XXXXXXX"
+                        maxlength="9"
+                        required
+                    >
+                    <p id="mpesaError" class="text-red-500 text-sm mt-1 hidden">Número inválido (use 84 ou 85)</p>
+                </div>
+
+                <div class="bg-gray-100 rounded-lg p-4 mb-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-gray-700">Preço por número:</span>
+                        <span class="font-bold text-gray-800">20 MZN</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-700">Total:</span>
+                        <span class="text-2xl font-bold text-black" id="totalPrice">0 MZN</span>
+                    </div>
+                </div>
+
+                <button 
+                    id="purchaseBtn" 
+                    class="btn btn-primary w-full"
+                    disabled
+                >
+                    Comprar Números
+                </button>
+
+                <p class="text-xs text-gray-500 mt-4 text-center">
+                    Pagamento via M-Pesa. Você receberá uma notificação para confirmar o pagamento.
+                </p>
+            </div>
+        </div>
+
+        <!-- Last Results -->
+        <div class="bg-white rounded-2xl shadow-2xl p-6 mt-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">🏆 Últimos Resultados</h2>
+            <div class="grid md:grid-cols-3 gap-4">
+                <div class="bg-black text-white rounded-lg p-4">
+                    <div class="text-sm mb-1">Ontem</div>
+                    <div class="text-3xl font-bold">Nº 147</div>
+                    <div class="text-sm mt-1">João Silva - 5.000 MZN</div>
+                </div>
+                <div class="bg-gray-800 text-white rounded-lg p-4">
+                    <div class="text-sm mb-1">Há 2 dias</div>
+                    <div class="text-3xl font-bold">Nº 089</div>
+                    <div class="text-sm mt-1">Maria Santos - 5.000 MZN</div>
+                </div>
+                <div class="bg-gray-600 text-white rounded-lg p-4">
+                    <div class="text-sm mb-1">Há 3 dias</div>
+                    <div class="text-3xl font-bold">Nº 234</div>
+                    <div class="text-sm mt-1">Pedro Costa - 5.000 MZN</div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="footer">Suporte: #rifa_mz</div>
-  </div>
-  <div class="gift-box" id="giftBox">
-    <div class="gift-content">
-      <button class="close-gift" id="closeGift">✕</button>
-      <div class="emoji">🎁</div>
-      <div class="ticket-code" id="ticketCode"></div>
-      <p>Números reservados!</p>
+
+    <!-- Gift Modal -->
+    <div id="giftModal" class="modal">
+        <div class="modal-content">
+            <div class="text-center">
+                <div class="text-6xl mb-4">🎉</div>
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Parabéns!</h2>
+                <p class="text-gray-600 mb-6">Seus números foram reservados com sucesso!</p>
+                
+                <div class="bg-gray-100 rounded-lg p-4 mb-6">
+                    <p class="text-gray-700 mb-2">Números comprados:</p>
+                    <div id="purchasedNumbers" class="flex flex-wrap gap-2 justify-center mb-4"></div>
+                    <p class="text-2xl font-bold text-black" id="modalTotal"></p>
+                </div>
+
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 text-left">
+                    <p class="text-sm text-gray-700">
+                        <strong>Próximos passos:</strong><br>
+                        1. Você receberá uma notificação M-Pesa no número <strong id="modalMpesa"></strong><br>
+                        2. Confirme o pagamento no seu telefone<br>
+                        3. Seus números serão ativados automaticamente
+                    </p>
+                </div>
+
+                <button id="closeModal" class="btn btn-primary w-full">
+                    Entendido!
+                </button>
+            </div>
+        </div>
     </div>
-  </div>
-<script>
-let takenTickets = [2, 5, 10, 150];
-let selectedTickets = [];
-const totalTickets = 300;
-const ticketPrice = 20;
-const ticketGrid = document.getElementById("ticketGrid");
-const totalValue = document.getElementById("totalValue");
-const giftBox = document.getElementById("giftBox");
-const ticketCode = document.getElementById("ticketCode");
-const closeGift = document.getElementById("closeGift");
-const countdownEl = document.getElementById("countdown");
 
-function generateTicketGrid() {
-  ticketGrid.innerHTML = "";
-  for (let t = 1; t <= totalTickets; t++) {
-    const btn = document.createElement("button");
-    btn.className = "ticket-btn";
-    btn.textContent = t;
-    btn.dataset.ticket = t;
-    if (takenTickets.includes(t)) {
-      btn.disabled = true;
-    } else {
-      btn.addEventListener("click", () => selectTicket(t));
-    }
-    ticketGrid.appendChild(btn);
-  }
-  updateSelectedTickets();
-}
+    <script>
+        // State
+        let selectedTickets = new Set();
+        let takenTickets = new Set([12, 45, 78, 123, 156, 189, 234, 267]); // Simulated taken tickets
+        const TICKET_PRICE = 20;
+        const TOTAL_TICKETS = 300;
 
-function selectTicket(ticket) {
-  if (selectedTickets.includes(ticket)) {
-    selectedTickets = selectedTickets.filter(t => t !== ticket);
-    ticketGrid.querySelector(`[data-ticket="${ticket}"]`).classList.remove("selected");
-  } else {
-    selectedTickets.push(ticket);
-    ticketGrid.querySelector(`[data-ticket="${ticket}"]`).classList.add("selected");
-  }
-  updateTotalValue();
-  ticketCode.textContent = `Bilhetes #${selectedTickets.join(", #")}`;
-  giftBox.classList.add("active");
-}
+        // Elements
+        const ticketGrid = document.getElementById('ticketGrid');
+        const selectedNumbersDiv = document.getElementById('selectedNumbers');
+        const totalPriceSpan = document.getElementById('totalPrice');
+        const purchaseBtn = document.getElementById('purchaseBtn');
+        const userNameInput = document.getElementById('userName');
+        const mpesaNumberInput = document.getElementById('mpesaNumber');
+        const nameError = document.getElementById('nameError');
+        const mpesaError = document.getElementById('mpesaError');
+        const giftModal = document.getElementById('giftModal');
+        const closeModalBtn = document.getElementById('closeModal');
 
-function updateTotalValue() {
-  const qty = selectedTickets.length;
-  const total = qty * ticketPrice;
-  totalValue.textContent = `Total: ${total} MZN (${qty} bilhete${qty !== 1 ? 's' : ''})`;
-}
+        // Initialize ticket grid
+        function initializeTickets() {
+            for (let i = 1; i <= TOTAL_TICKETS; i++) {
+                const ticket = document.createElement('div');
+                ticket.className = 'ticket ' + (takenTickets.has(i) ? 'taken' : 'available');
+                ticket.textContent = i;
+                ticket.dataset.number = i;
+                
+                if (!takenTickets.has(i)) {
+                    ticket.addEventListener('click', () => toggleTicket(i, ticket));
+                }
+                
+                ticketGrid.appendChild(ticket);
+            }
+        }
 
-function updateCountdown() {
-  const now = new Date();
-  const day = now.getDay();
-  const daysUntilSunday = 7 - day + (day === 0 ? 0 : 7);
-  const target = new Date(now.getFullYear(), now.getMonth(), now.getDate() + daysUntilSunday, 23, 59, 0);
-  const diff = (target - now) / 1000;
-  const days = Math.floor(diff / 86400);
-  const hours = Math.floor((diff % 86400) / 3600);
-  const minutes = Math.floor((diff % 3600) / 60);
-  const seconds = Math.floor(diff % 60);
-  countdownEl.textContent = `Aguardando Resultados: ${days}d ${hours}h ${minutes}m ${seconds}s`;
-  if (diff <= 0) setTimeout(updateCountdown, 1000);
-}
+        // Toggle ticket selection
+        function toggleTicket(number, element) {
+            if (selectedTickets.has(number)) {
+                selectedTickets.delete(number);
+                element.classList.remove('selected');
+            } else {
+                selectedTickets.add(number);
+                element.classList.add('selected');
+            }
+            updateUI();
+        }
 
-function updateSelectedTickets() {
-  selectedTickets = selectedTickets.filter(t => !takenTickets.includes(t));
-  ticketGrid.querySelectorAll(".ticket-btn").forEach(btn => {
-    const ticket = parseInt(btn.dataset.ticket);
-    if (selectedTickets.includes(ticket)) {
-      btn.classList.add("selected");
-    } else {
-      btn.classList.remove("selected");
-    }
-  });
-  updateTotalValue();
-}
+        // Update UI
+        function updateUI() {
+            // Update selected numbers display
+            if (selectedTickets.size === 0) {
+                selectedNumbersDiv.innerHTML = '<span class="text-gray-400 text-sm">Nenhum número selecionado</span>';
+            } else {
+                selectedNumbersDiv.innerHTML = Array.from(selectedTickets)
+                    .sort((a, b) => a - b)
+                    .map(num => `<span class="bg-black text-white px-3 py-1 rounded-full text-sm font-semibold">${num}</span>`)
+                    .join('');
+            }
 
-closeGift.addEventListener("click", () => {
-  giftBox.classList.remove("active");
-});
+            // Update total price
+            const total = selectedTickets.size * TICKET_PRICE;
+            totalPriceSpan.textContent = `${total} MZN`;
 
-generateTicketGrid();
-updateCountdown();
-setInterval(updateCountdown, 1000);
+            // Update purchase button
+            purchaseBtn.disabled = selectedTickets.size === 0;
+        }
 
-document.getElementById("rifaForm").addEventListener("submit", async e => {
-  e.preventDefault();
-  const buyBtn = document.getElementById("buyBtn");
-  const status = document.getElementById("status");
-  const name = document.getElementById("name").value.trim();
-  const qty = selectedTickets.length;
-  if (!name || qty === 0) {
-    status.textContent = "Nome e pelo menos um número são obrigatórios.";
-    status.className = "status error";
-    return;
-  }
-  buyBtn.disabled = true;
-  buyBtn.textContent = "Processando...";
-  status.textContent = "Iniciando pagamento...";
-  status.className = "status loading";
-  try {
-    const res = await fetch("/api/create-payment", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, tickets: selectedTickets, amount: qty * ticketPrice })
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || "Erro no pagamento");
-    status.innerHTML = data.checkout_url
-      ? `Pagar: <a href="${data.checkout_url}" target="_blank" style="color:#000;font-weight:700">M-Pesa</a>`
-      : "Aguarde SMS (*150*00#).";
-    status.className = "status success";
-    pollPayment(data.payment_id);
-  } catch (err) {
-    status.textContent = "Erro: " + err.message;
-    status.className = "status error";
-  } finally {
-    buyBtn.disabled = false;
-    buyBtn.textContent = "Comprar";
-  }
-});
+        // Validate M-Pesa number
+        function validateMpesaNumber(number) {
+            const regex = /^(84|85)\d{7}$/;
+            return regex.test(number);
+        }
 
-async function pollPayment(paymentId) {
-  let attempts = 0;
-  const interval = setInterval(async () => {
-    if (attempts++ > 20) return clearInterval(interval);
-    try {
-      const res = await fetch(`/api/payment-status/${paymentId}`);
-      const data = await res.json();
-      if (data.status === "confirmed") {
-        takenTickets.push(...selectedTickets);
-        selectedTickets = [];
-        generateTicketGrid();
-        clearInterval(interval);
-        document.getElementById("status").innerHTML = "Confirmado!<br>Bilhetes reservados.<br>Boa sorte!";
-        document.getElementById("status").className = "status success";
-      }
-    } catch (err) {}
-  }, 4000);
-}
-</script>
+        // Validate name
+        function validateName(name) {
+            return name.trim().length >= 3;
+        }
+
+        // Handle purchase
+        purchaseBtn.addEventListener('click', () => {
+            const name = userNameInput.value.trim();
+            const mpesaNumber = mpesaNumberInput.value.trim();
+
+            // Validate inputs
+            let isValid = true;
+
+            if (!validateName(name)) {
+                nameError.classList.remove('hidden');
+                userNameInput.classList.add('error');
+                isValid = false;
+            } else {
+                nameError.classList.add('hidden');
+                userNameInput.classList.remove('error');
+            }
+
+            if (!validateMpesaNumber(mpesaNumber)) {
+                mpesaError.classList.remove('hidden');
+                mpesaNumberInput.classList.add('error');
+                isValid = false;
+            } else {
+                mpesaError.classList.add('hidden');
+                mpesaNumberInput.classList.remove('error');
+            }
+
+            if (!isValid) return;
+
+            // Process purchase
+            const total = selectedTickets.size * TICKET_PRICE;
+            const numbers = Array.from(selectedTickets).sort((a, b) => a - b);
+
+            // Update taken tickets
+            numbers.forEach(num => takenTickets.add(num));
+
+            // Show modal
+            document.getElementById('purchasedNumbers').innerHTML = numbers
+                .map(num => `<span class="bg-black text-white px-3 py-1 rounded-full text-sm font-semibold">${num}</span>`)
+                .join('');
+            document.getElementById('modalTotal').textContent = `Total: ${total} MZN`;
+            document.getElementById('modalMpesa').textContent = mpesaNumber;
+            giftModal.classList.add('active');
+
+            // Reset form
+            selectedTickets.clear();
+            userNameInput.value = '';
+            mpesaNumberInput.value = '';
+            
+            // Update ticket grid
+            document.querySelectorAll('.ticket').forEach(ticket => {
+                const num = parseInt(ticket.dataset.number);
+                if (numbers.includes(num)) {
+                    ticket.classList.remove('available', 'selected');
+                    ticket.classList.add('taken');
+                    ticket.style.pointerEvents = 'none';
+                } else if (ticket.classList.contains('selected')) {
+                    ticket.classList.remove('selected');
+                }
+            });
+
+            updateUI();
+        });
+
+        // Close modal
+        closeModalBtn.addEventListener('click', () => {
+            giftModal.classList.remove('active');
+        });
+
+        // M-Pesa number input formatting
+        mpesaNumberInput.addEventListener('input', (e) => {
+            e.target.value = e.target.value.replace(/\D/g, '');
+        });
+
+        // Countdown timer
+        function updateCountdown() {
+            const now = new Date();
+            const tomorrow = new Date(now);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            tomorrow.setHours(20, 0, 0, 0); // 8 PM tomorrow
+
+            const diff = tomorrow - now;
+            
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+        }
+
+        // Initialize
+        initializeTickets();
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    </script>
 </body>
 </html>
