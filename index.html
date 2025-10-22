@@ -122,6 +122,12 @@
         .btn-secondary:hover {
             background: #d1d5db;
         }
+        .error-message {
+            color: #ef4444;
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
         @media (max-width: 640px) {
             .ticket {
                 width: 32px;
@@ -135,7 +141,7 @@
     <div class="container">
         <div class="text-center mb-4">
             <h1 class="text-3xl font-bold text-white mb-1">🎁 Rifa Diária</h1>
-            <p class="text-white text-base">Escolha seus números!</p>
+            <p class="text-white text-base">Escolha até 5 números!</p>
         </div>
         <div class="bg-white rounded-xl shadow-xl p-4 mb-4">
             <div class="text-center">
@@ -159,7 +165,8 @@
         <div class="grid md:grid-cols-3 gap-4">
             <div class="md:col-span-2 bg-white rounded-xl shadow-xl p-4">
                 <h2 class="text-xl font-bold text-gray-800 mb-2">Escolha seus números</h2>
-                <div class="grid grid-cols-8 sm:grid-cols-12 md:grid-cols-14 gap-1" id="ticketGrid"></div>
+                <p id="maxTicketsError" class="error-message">Você pode selecionar no máximo 5 números!</p>
+                <div class="grid grid-cols-10 sm:grid-cols-16 md:grid-cols-20 gap-1" id="ticketGrid"></div>
             </div>
             <div class="bg-white rounded-xl shadow-xl p-4">
                 <h2 class="text-xl font-bold text-gray-800 mb-2">Finalizar Compra</h2>
@@ -184,7 +191,7 @@
                 <div class="bg-gray-100 rounded-md p-3 mb-3">
                     <div class="flex justify-between items-center mb-1">
                         <span class="text-gray-700 text-sm">Preço por número:</span>
-                        <span class="font-bold text-gray-800 text-sm">20 MZN</span>
+                        <span class="font-bold text-gray-800 text-sm">25 MZN</span>
                     </div>
                     <div class="flex justify-between items-center">
                         <span class="text-gray-700 text-sm">Total:</span>
@@ -201,17 +208,17 @@
                 <div class="bg-black text-white rounded-md p-3">
                     <div class="text-xs mb-1">Ontem</div>
                     <div class="text-2xl font-bold">Nº 147</div>
-                    <div class="text-xs mt-1">João Silva - 1.000 MZN</div>
+                    <div class="text-xs mt-1">João Silva - 5.000 MZN</div>
                 </div>
                 <div class="bg-gray-800 text-white rounded-md p-3">
                     <div class="text-xs mb-1">Há 2 dias</div>
                     <div class="text-2xl font-bold">Nº 089</div>
-                    <div class="text-xs mt-1">Maria Santos - 1.000 MZN</div>
+                    <div class="text-xs mt-1">Maria Santos - 5.000 MZN</div>
                 </div>
                 <div class="bg-gray-600 text-white rounded-md p-3">
                     <div class="text-xs mb-1">Há 3 dias</div>
                     <div class="text-2xl font-bold">Nº 234</div>
-                    <div class="text-xs mt-1">Pedro Costa - 1.000 MZN</div>
+                    <div class="text-xs mt-1">Pedro Costa - 5.000 MZN</div>
                 </div>
             </div>
         </div>
@@ -242,8 +249,9 @@
     <script>
         let selectedTickets = new Set();
         let takenTickets = new Set([12, 45, 78, 123, 156, 189, 234, 267]);
-        const TICKET_PRICE = 20;
-        const TOTAL_TICKETS = 300;
+        const TICKET_PRICE = 25;
+        const TOTAL_TICKETS = 10000;
+        const MAX_TICKETS = 5;
         const ticketGrid = document.getElementById('ticketGrid');
         const selectedNumbersDiv = document.getElementById('selectedNumbers');
         const totalPriceSpan = document.getElementById('totalPrice');
@@ -252,6 +260,7 @@
         const mpesaNumberInput = document.getElementById('mpesaNumber');
         const nameError = document.getElementById('nameError');
         const mpesaError = document.getElementById('mpesaError');
+        const maxTicketsError = document.getElementById('maxTicketsError');
         const giftModal = document.getElementById('giftModal');
         const closeModalBtn = document.getElementById('closeModal');
         function initializeTickets() {
@@ -270,9 +279,15 @@
             if (selectedTickets.has(number)) {
                 selectedTickets.delete(number);
                 element.classList.remove('selected');
+                maxTicketsError.style.display = 'none';
             } else {
+                if (selectedTickets.size >= MAX_TICKETS) {
+                    maxTicketsError.style.display = 'block';
+                    return;
+                }
                 selectedTickets.add(number);
                 element.classList.add('selected');
+                maxTicketsError.style.display = 'none';
             }
             updateUI();
         }
