@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+  <meta charset="utf-8">
+  <title>Rifa Semanal — 25.000 MZN</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #000;
+      color: #fff;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .card {
+      background: #fff;
+      color: #000;
+      padding: 2rem 1.5rem;
+      border: 1px solid #000;
+      border-radius: 12px;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    
+    .info {
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.4;
+    }
+    
+    .field {
+      margin-bottom: 1.25rem;
+      text-align: left;
+    }
+    
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+    
+    input, select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #000;
+      border-radius: 8px;
+      font-size: 1rem;
+      background: #fff;
+      transition: border-color 0.2s;
+    }
+    
+    input:focus, select:focus {
+      outline: none;
+      border-color: #333;
+      box-shadow: 0 0 0 2px rgba(0,0,0,0.2);
+    }
+    
+    button {
+      width: 100%;
+      padding: 1rem;
+      background: #000;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    button:hover:not(:disabled) {
+      background: #333;
+    }
+    
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .status {
+      margin-top: 1rem;
+      padding: 0.75rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      min-height: 20px;
+      border: 1px solid transparent;
+    }
+    
+    .status.loading {
+      background: #f5f5f5;
+      border-color: #000;
+    }
+    
+    .status.success {
+      background: #fff;
+      border-color: #000;
+    }
+    
+    .status.error {
+      background: #fff;
+      border-color: #000;
+      color: #000;
+    }
+    
+    .money {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    @media (max-width: 480px) {
+      body { padding: 1rem; }
+      .card { padding: 1.5rem 1rem; }
+      h2 { font-size: 1.25rem; }
+      .money { font-size: 1.75rem; }
+    }
+    
+    @media (min-width: 768px) {
+      .card { padding: 2.5rem 2rem; max-width: 450px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="money">💰</div>
+    <h2>25.000 MZN</h2>
+    <p class="info">150 MZN por bilhete<br>Sorteio: Domingo 23:59</p>
+    
+    <form id="rifaForm">
+      <div class="field">
+        <label>Nome completo</label>
+        <input id="name" required>
+      </div>
+      
+      <div class="field">
+        <label>Telefone (+258)</label>
+        <input id="phone" type="tel" placeholder="88XXXXXXXX" required>
+      </div>
+      
+      <div class="field">
+        <label>Nº bilhetes</label>
+        <select id="quantity">
+          <option value="1">1 (150 MZN)</option>
+          <option value="2">2 (300 MZN)</option>
+          <option value="5">5 (750 MZN)</option>
+        </select>
+      </div>
+      
+      <button type="submit" id="buyBtn">Comprar via M-Pesa</button>
+    </form>
+    
+    <div id="status" class="status"></div>
+  </div>
+
+<script>
+document.getElementById('rifaForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const btn = document.getElementById('buyBtn');
+  const status = document.getElementById('status');
+  const name = document.getElementById('name').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const qty = parseInt(document.getElementById('quantity').value);
+  
+  if (!name || !phone.match(/^88\d{8}$/)) {
+    status.textContent = 'Nome e telefone (+25888...) são obrigatórios.';
+    status.className = 'status error';
+    return;
+  }
+  
+  btn.disabled = true;
+  btn.textContent = 'A processar...';
+  status.textContent = 'Iniciando pagamento M-Pesa...';
+  status.className = 'status loading';
+  
+  try {
+    const res = await fetch('/api/create-payment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, phone: '+258' + phone, qty })
+    });
+    
+    const data = await res.json();
+    
+    if (!res.ok) throw new Error(data.message || 'Erro no pagamento');
+    
+    if (data.checkout_url) {
+      status.innerHTML = `Clique para pagar: <a href="${data.checkout_url}" target="_blank" style="color:#000;font-weight:600;">Abrir M-Pesa</a>`;
+    } else {
+      status.textContent = 'Envie *150*00# e siga as instruções do SMS.';
+    }
+    
+    status.className = 'status success';
+    pollPayment(data.payment_id);
+    
+  } catch (err) {
+    status.textContent = 'Erro: ' + err.message;
+    status.className = 'status error';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Comprar via M-Pesa';
+  }
+});
+
+async function pollPayment(paymentId) {
+  let attempts = 0;
+  const interval = setInterval(async () => {
+    attempts++;
+    if (attempts > 20) {
+      clearInterval(interval);
+      return;
+    }
+    
+    try {
+      const res = await fetch(`/api/payment-status/${paymentId}`);
+      const data = await res.json();
+      
+      if (data.status === 'confirmed') {
+        clearInterval(interval);
+        document.getElementById('status').innerHTML = 
+          '✅ <strong>Pagamento confirmado!</strong><br>Seus bilhetes foram reservados.';
+        document.getElementById('status').className = 'status success';
+      }
+    } catch (e) {
+      // Silencioso
+    }
+  }, 4000);
+}
+</script>
+</body>
+</html>
