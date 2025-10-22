@@ -24,17 +24,19 @@
             margin: 0 auto;
         }
 
+        /* Made tickets more compact - reduced size and spacing */
         .ticket {
-            width: 50px;
-            height: 50px;
+            width: 42px;
+            height: 42px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 8px;
+            border-radius: 6px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
             border: 2px solid transparent;
+            font-size: 13px;
         }
 
         .ticket.available {
@@ -141,11 +143,12 @@
             background: #d1d5db;
         }
 
+        /* Made mobile tickets even more compact */
         @media (max-width: 640px) {
             .ticket {
-                width: 40px;
-                height: 40px;
-                font-size: 12px;
+                width: 36px;
+                height: 36px;
+                font-size: 11px;
             }
         }
     </style>
@@ -184,7 +187,8 @@
             <!-- Ticket Grid -->
             <div class="md:col-span-2 bg-white rounded-2xl shadow-2xl p-6">
                 <h2 class="text-2xl font-bold text-gray-800 mb-4">Escolha seus números</h2>
-                <div class="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-10 gap-2" id="ticketGrid">
+                <!-- Increased columns and reduced gap for more compact grid -->
+                <div class="grid grid-cols-7 sm:grid-cols-10 md:grid-cols-12 gap-1.5" id="ticketGrid">
                     <!-- Tickets will be generated here -->
                 </div>
             </div>
@@ -256,20 +260,21 @@
         <div class="bg-white rounded-2xl shadow-2xl p-6 mt-6">
             <h2 class="text-2xl font-bold text-gray-800 mb-4">🏆 Últimos Resultados</h2>
             <div class="grid md:grid-cols-3 gap-4">
+                <!-- Updated prize amount to 1000 MZN -->
                 <div class="bg-black text-white rounded-lg p-4">
                     <div class="text-sm mb-1">Ontem</div>
                     <div class="text-3xl font-bold">Nº 147</div>
-                    <div class="text-sm mt-1">João Silva - 5.000 MZN</div>
+                    <div class="text-sm mt-1">João Silva - 1.000 MZN</div>
                 </div>
                 <div class="bg-gray-800 text-white rounded-lg p-4">
                     <div class="text-sm mb-1">Há 2 dias</div>
                     <div class="text-3xl font-bold">Nº 089</div>
-                    <div class="text-sm mt-1">Maria Santos - 5.000 MZN</div>
+                    <div class="text-sm mt-1">Maria Santos - 1.000 MZN</div>
                 </div>
                 <div class="bg-gray-600 text-white rounded-lg p-4">
                     <div class="text-sm mb-1">Há 3 dias</div>
                     <div class="text-3xl font-bold">Nº 234</div>
-                    <div class="text-sm mt-1">Pedro Costa - 5.000 MZN</div>
+                    <div class="text-sm mt-1">Pedro Costa - 1.000 MZN</div>
                 </div>
             </div>
         </div>
