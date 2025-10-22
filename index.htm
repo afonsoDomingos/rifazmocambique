@@ -6,38 +6,38 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:system-ui,sans-serif;background:#000;color:#fff;min-height:100vh;padding:1rem;display:flex;align-items:center;justify-content:center}
-    .card{background:#fff;color:#000;padding:1rem;border:1px solid #000;border-radius:8px;max-width:350px;width:100%;text-align:center;box-shadow:0 4px 8px rgba(0,0,0,.3)}
-    h2{font-size:1.2rem;font-weight:700;margin-bottom:.3rem}
-    .prize{font-size:1.4rem;font-weight:800;margin:.3rem 0}
-    .info{font-size:.75rem;margin-bottom:.8rem;color:#333}
-    .details{background:#f9f9f9;padding:.5rem;border-radius:6px;margin-bottom:.8rem;font-size:.7rem;border:1px solid #ddd}
+    body{font-family:system-ui,sans-serif;background:#000;color:#fff;min-height:100vh;padding:.8rem;display:flex;align-items:center;justify-content:center}
+    .card{background:#fff;color:#000;padding:.8rem;border:1px solid #000;border-radius:6px;max-width:320px;width:100%;text-align:center;box-shadow:0 3px 6px rgba(0,0,0,.3)}
+    h2{font-size:1.1rem;font-weight:700;margin-bottom:.2rem}
+    .prize{font-size:1.3rem;font-weight:800;margin:.2rem 0}
+    .info{font-size:.7rem;margin-bottom:.6rem;color:#333}
+    .details{background:#f9f9f9;padding:.4rem;border-radius:4px;margin-bottom:.6rem;font-size:.65rem;border:1px solid #ddd}
     .details ul{list-style:none}
-    .details li{margin-bottom:.3rem;padding-left:1rem}
-    .details li:before{content:"✓";position:absolute;left:.3rem}
-    .field{margin-bottom:.8rem;text-align:left}
-    label{display:block;font-size:.7rem;font-weight:500;margin-bottom:.2rem}
-    input,select{width:100%;padding:.5rem;border:1px solid #000;border-radius:4px;font-size:.8rem}
+    .details li{margin-bottom:.2rem;padding-left:.8rem}
+    .details li:before{content:"✓";position:absolute;left:.2rem}
+    .field{margin-bottom:.6rem;text-align:left}
+    label{display:block;font-size:.65rem;font-weight:500;margin-bottom:.15rem}
+    input,select{width:100%;padding:.4rem;border:1px solid #000;border-radius:3px;font-size:.75rem}
     input:focus,select:focus{outline:0;border-color:#333;box-shadow:0 0 0 1px rgba(0,0,0,.2)}
-    button{width:100%;padding:.6rem;background:#000;color:#fff;border:none;border-radius:4px;font-size:.8rem;font-weight:600;cursor:pointer}
+    button{width:100%;padding:.5rem;background:#000;color:#fff;border:none;border-radius:3px;font-size:.75rem;font-weight:600;cursor:pointer}
     button:hover:not(:disabled){background:#333}
     button:disabled{opacity:.5;cursor:not-allowed}
-    .status{margin-top:.8rem;padding:.4rem;border-radius:4px;font-size:.7rem;border:1px solid transparent}
+    .status{margin-top:.6rem;padding:.3rem;border-radius:3px;font-size:.65rem;border:1px solid transparent}
     .status.loading,.status.success,.status.error{background:#fff;border-color:#000}
-    .money{font-size:1.5rem;margin-bottom:.3rem}
-    .footer{margin-top:.8rem;font-size:.65rem;color:#666}
-    .ticket-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(35px,1fr));gap:4px;margin-bottom:.8rem;max-height:120px;overflow-y:auto;padding:.4rem;background:#f9f9f9;border-radius:6px;border:1px solid #ddd}
-    .ticket-btn{padding:.3rem;background:#fff;border:1px solid #000;border-radius:4px;font-size:.7rem;cursor:pointer}
+    .money{font-size:1.4rem;margin-bottom:.2rem}
+    .footer{margin-top:.6rem;font-size:.6rem;color:#666}
+    .ticket-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(32px,1fr));gap:3px;margin-bottom:.6rem;max-height:100px;overflow-y:auto;padding:.3rem;background:#f9f9f9;border-radius:4px;border:1px solid #ddd}
+    .ticket-btn{padding:.2rem;background:#fff;border:1px solid #000;border-radius:3px;font-size:.65rem;cursor:pointer}
     .ticket-btn:hover,.ticket-btn.selected{background:#000;color:#fff}
     .ticket-btn:disabled{background:#ddd;color:#666;cursor:not-allowed}
     .gift-box{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center;z-index:1000}
     .gift-box.active{display:flex}
-    .gift-content{background:#fff;padding:1rem;border-radius:6px;text-align:center;animation:openGift 1.2s ease forwards}
-    .gift-content .ticket-code{font-size:1.1rem;font-weight:700;margin:.8rem 0}
-    .close-gift{position:absolute;top:6px;right:6px;background:0;border:0;font-size:.9rem;cursor:pointer}
+    .gift-content{background:#fff;padding:.8rem;border-radius:5px;text-align:center;animation:openGift 1s ease forwards}
+    .gift-content .ticket-code{font-size:1rem;font-weight:700;margin:.6rem 0}
+    .close-gift{position:absolute;top:5px;right:5px;background:0;border:0;font-size:.8rem;cursor:pointer}
     @keyframes openGift{0%{transform:scale(0);opacity:0}50%{transform:scale(1.2);opacity:1}100%{transform:scale(1);opacity:1}}
-    @media (max-width:480px){.card{padding:.8rem}h2{font-size:1rem}.prize{font-size:1.2rem}.money{font-size:1.3rem}.ticket-grid{grid-template-columns:repeat(auto-fit,minmax(30px,1fr))}}
-    @media (min-width:768px){.card{padding:1.5rem;max-width:380px}}
+    @media (max-width:480px){.card{padding:.6rem}h2{font-size:.9rem}.prize{font-size:1.1rem}.money{font-size:1.2rem}.ticket-grid{grid-template-columns:repeat(auto-fit,minmax(28px,1fr))}}
+    @media (min-width:768px){.card{padding:1.2rem;max-width:350px}}
   </style>
 </head>
 <body>
@@ -52,7 +52,6 @@
         <li>Prêmio via M-Pesa</li>
         <li>Sorteio: @rifa_mz</li>
         <li>Resultado por SMS</li>
-        <li>Rifa Legal MZ</li>
       </ul>
     </div>
     <div class="field">
@@ -66,10 +65,6 @@
         <input id="name" placeholder="João Silva" required>
       </div>
       <div class="field">
-        <label>Telefone (+258)</label>
-        <input id="phone" type="tel" placeholder="88XXXXXXXX" required>
-      </div>
-      <div class="field">
         <label>Bilhetes</label>
         <select id="quantity">
           <option value="1">1 (20 MZN)</option>
@@ -81,7 +76,7 @@
       <button type="submit" id="buyBtn">Comprar</button>
     </form>
     <div id="status" class="status"></div>
-    <div class="footer">Rifa autorizada • Suporte: +258 84 123 4567</div>
+    <div class="footer">Suporte: @rifa_mz</div>
   </div>
   <div class="gift-box" id="giftBox">
     <div class="gift-content">
@@ -92,7 +87,7 @@
     </div>
   </div>
 <script>
-const totalTickets=300,takenTickets=[2,5,10,150],ticketGrid=document.getElementById("ticketGrid"),selectedTicketInput=document.getElementById("selectedTicket"),giftBox=document.getElementById("giftBox"),ticketCode=document.getElementById("ticketCode"),closeGift=document.getElementById("closeGift");function generateTicketGrid(){ticketGrid.innerHTML="";for(let t=1;t<=totalTickets;t++){const e=document.createElement("button");e.className="ticket-btn",e.textContent=t,e.dataset.ticket=t,takenTickets.includes(t)?e.disabled=!0:e.addEventListener("click",()=>selectTicket(t)),ticketGrid.appendChild(e)}}function selectTicket(t){const e=ticketGrid.querySelector(".ticket-btn.selected");e&&e.classList.remove("selected");ticketGrid.querySelector(`[data-ticket="${t}"]`).classList.add("selected"),selectedTicketInput.value=t,ticketCode.textContent=`Bilhete #${t}`,giftBox.classList.add("active")}closeGift.addEventListener("click",()=>{giftBox.classList.remove("active")}),generateTicketGrid(),document.getElementById("rifaForm").addEventListener("submit",async t=>{t.preventDefault();const e=document.getElementById("buyBtn"),i=document.getElementById("status"),n=document.getElementById("name").value.trim(),a=document.getElementById("phone").value.trim(),c=parseInt(document.getElementById("quantity").value),l=selectedTicketInput.value;if(!n||!a.match(/^88\d{8}$/)||!l)return i.textContent="Nome, telefone e número obrigatórios.",void(i.className="status error");e.disabled=!0,e.textContent="Processando...",i.textContent="Iniciando pagamento...",i.className="status loading";try{const t=await fetch("/api/create-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:n,phone:"+258"+a,qty:c,ticket:l,amount:20*c})}),s=await t.json();if(!t.ok)throw new Error(s.message||"Erro no pagamento");i.innerHTML=s.checkout_url?`Pagar: <a href="${s.checkout_url}" target="_blank" style="color:#000;font-weight:600">M-Pesa</a>`:"Aguarde SMS (*150*00#).",i.className="status success",pollPayment(s.payment_id)}catch(t){i.textContent="Erro: "+t.message,i.className="status error"}finally{e.disabled=!1,e.textContent="Comprar"}});async function pollPayment(t){let e=0;const i=setInterval(async()=>{if(e++,e>20)return void clearInterval(i);try{const s=await fetch(`/api/payment-status/${t}`),n=await s.json();n.status==="confirmed"&&(clearInterval(i),document.getElementById("status").innerHTML="Confirmado!<br>Bilhetes reservados.<br>Boa sorte!",document.getElementById("status").className="status success")}catch(t){}},4e3)}
+const totalTickets=300,takenTickets=[2,5,10,150],ticketGrid=document.getElementById("ticketGrid"),selectedTicketInput=document.getElementById("selectedTicket"),giftBox=document.getElementById("giftBox"),ticketCode=document.getElementById("ticketCode"),closeGift=document.getElementById("closeGift");function generateTicketGrid(){ticketGrid.innerHTML="";for(let t=1;t<=totalTickets;t++){const e=document.createElement("button");e.className="ticket-btn",e.textContent=t,e.dataset.ticket=t,takenTickets.includes(t)?e.disabled=!0:e.addEventListener("click",()=>selectTicket(t)),ticketGrid.appendChild(e)}}function selectTicket(t){const e=ticketGrid.querySelector(".ticket-btn.selected");e&&e.classList.remove("selected");ticketGrid.querySelector(`[data-ticket="${t}"]`).classList.add("selected"),selectedTicketInput.value=t,ticketCode.textContent=`Bilhete #${t}`,giftBox.classList.add("active")}closeGift.addEventListener("click",()=>{giftBox.classList.remove("active")}),generateTicketGrid(),document.getElementById("rifaForm").addEventListener("submit",async t=>{t.preventDefault();const e=document.getElementById("buyBtn"),i=document.getElementById("status"),n=document.getElementById("name").value.trim(),c=parseInt(document.getElementById("quantity").value),l=selectedTicketInput.value;if(!n||!l)return i.textContent="Nome e número obrigatórios.",void(i.className="status error");e.disabled=!0,e.textContent="Processando...",i.textContent="Iniciando pagamento...",i.className="status loading";try{const t=await fetch("/api/create-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:n,qty:c,ticket:l,amount:20*c})}),s=await t.json();if(!t.ok)throw new Error(s.message||"Erro no pagamento");i.innerHTML=s.checkout_url?`Pagar: <a href="${s.checkout_url}" target="_blank" style="color:#000;font-weight:600">M-Pesa</a>`:"Aguarde SMS (*150*00#).",i.className="status success",pollPayment(s.payment_id)}catch(t){i.textContent="Erro: "+t.message,i.className="status error"}finally{e.disabled=!1,e.textContent="Comprar"}});async function pollPayment(t){let e=0;const i=setInterval(async()=>{if(e++,e>20)return void clearInterval(i);try{const s=await fetch(`/api/payment-status/${t}`),n=await s.json();n.status==="confirmed"&&(clearInterval(i),document.getElementById("status").innerHTML="Confirmado!<br>Bilhetes reservados.<br>Boa sorte!",document.getElementById("status").className="status success")}catch(t){}},4e3)}
 </script>
 </body>
 </html>
