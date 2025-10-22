@@ -8,42 +8,43 @@
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
     body{font-family:'Poppins',sans-serif;background:#000;color:#fff;min-height:100vh;padding:.5rem;display:flex;align-items:center;justify-content:center;font-weight:400}
-    .card{background:#fff;color:#000;padding:.6rem;border:1px solid #000;border-radius:5px;width:100%;height:calc(100vh - 1rem);text-align:center;box-shadow:0 2px 5px rgba(0,0,0,.3);display:flex;flex-direction:column;justify-content:space-between}
+    .card{background:#fff;color:#000;padding:.7rem;border:1px solid #000;border-radius:8px;width:100%;height:calc(100vh - 1rem);text-align:center;box-shadow:0 4px 8px rgba(0,0,0,.2);display:flex;flex-direction:column;justify-content:space-between}
     .main-content{flex-grow:1;display:flex;flex-direction:column}
     h2{font-size:1.5rem;font-weight:900;margin-bottom:.15rem}
     .prize{font-size:1.8rem;font-weight:900;margin:.15rem 0}
-    .info{font-size:.85rem;margin-bottom:.5rem;color:#333;font-weight:400}
-    .details{background:#f9f9f9;padding:.5rem;border-radius:3px;margin-bottom:.5rem;font-size:.8rem;border:1px solid #ddd;font-weight:500}
+    .info{font-size:.9rem;margin-bottom:.5rem;color:#333;font-weight:400}
+    .details{background:#f9f9f9;padding:.5rem;border-radius:5px;margin-bottom:.5rem;font-size:.8rem;border:1px solid #ddd;font-weight:500}
     .details ul{list-style:none}
     .details li{margin-bottom:.15rem;padding-left:.7rem}
     .details li:before{content:"✓";position:absolute;left:.15rem}
-    .field{margin-bottom:.6rem;text-align:left}
+    .field{margin-bottom:.7rem;text-align:left}
     label{display:block;font-size:.75rem;font-weight:600;margin-bottom:.1rem}
-    input,select{width:100%;padding:.3rem;border:1px solid #000;border-radius:2px;font-size:.8rem;font-weight:400}
-    input:focus,select:focus{outline:0;border-color:#333;box-shadow:0 0 0 1px rgba(0,0,0,.2)}
+    input{width:100%;padding:.3rem;border:1px solid #000;border-radius:2px;font-size:.8rem;font-weight:400}
+    input:focus{outline:0;border-color:#333;box-shadow:0 0 0 1px rgba(0,0,0,.2)}
     button{width:100%;padding:.5rem;background:#000;color:#fff;border:none;border-radius:2px;font-size:.8rem;font-weight:700;cursor:pointer}
-    button:hover:not(:disabled){background:#333}
+    button:hover:not(:disabled){background:#222}
     button:disabled{opacity:.5;cursor:not-allowed}
-    .status{margin-top:.7rem;padding:.5rem;border-radius:2px;font-size:.75rem;border:1px solid transparent;font-weight:500}
+    .status{margin-top:.8rem;padding:.5rem;border-radius:5px;font-size:.75rem;border:1px solid transparent;font-weight:500}
     .status.loading,.status.success,.status.error{background:#fff;border-color:#000}
+    .total-value{font-size:.8rem;font-weight:600;margin-top:.5rem;color:#000}
     .money{font-size:2rem;margin-bottom:.15rem;font-weight:900}
-    .footer{margin-top:.7rem;font-size:.75rem;color:#666;font-weight:400}
-    .ticket-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(40px,1fr));gap:4px;margin-bottom:.5rem;max-height:120px;overflow-y:auto;padding:.4rem;background:#f9f9f9;border-radius:3px;border:1px solid #ddd}
-    .ticket-btn{padding:.15rem;background:#fff;border:1px solid #000;border-radius:2px;font-size:.8rem;cursor:pointer;font-weight:700}
+    .footer{margin-top:.8rem;font-size:.75rem;color:#666;font-weight:400}
+    .ticket-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(45px,1fr));gap:4px;margin-bottom:.5rem;max-height:120px;overflow-y:auto;padding:.4rem;background:#f9f9f9;border-radius:5px;border:1px solid #ddd}
+    .ticket-btn{padding:.15rem;background:#f5f5f5;border:2px solid #000;border-radius:2px;font-size:.8rem;cursor:pointer;font-weight:700;transition:all 0.2s}
     .ticket-btn:hover,.ticket-btn.selected{background:#000;color:#fff}
     .ticket-btn:disabled{background:#ddd;color:#666;cursor:not-allowed;font-weight:500}
     .gift-box{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center;z-index:1000}
     .gift-box.active{display:flex}
-    .gift-content{background:#fff;padding:.7rem;border-radius:4px;text-align:center;animation:openGift .6s ease forwards}
+    .gift-content{background:linear-gradient(135deg,#fff,#f0f0f0);padding:.7rem;border-radius:4px;text-align:center;animation:openGift .6s cubic-bezier(0.4,0,0.2,1) forwards}
     .gift-content .ticket-code{font-size:1.2rem;font-weight:900;margin:.5rem 0}
     .gift-content p{font-size:.8rem;font-weight:600}
-    .gift-content .emoji{font-size:2rem}
+    .gift-content .emoji{font-size:2.5rem}
     .close-gift{position:absolute;top:4px;right:4px;background:0;border:0;font-size:.9rem;cursor:pointer;font-weight:700}
-    .last-result,.countdown{background:#f9f9f9;padding:.5rem;border-radius:3px;margin-top:.7rem;font-size:.8rem;border:1px solid #ddd;color:#000;font-weight:500}
+    .last-result,.countdown{background:#f9f9f9;padding:.5rem;border-radius:5px;margin-top:.8rem;font-size:.8rem;border:1px solid #ddd;color:#000;font-weight:500}
     .countdown{font-weight:700}
     @keyframes openGift{0%{transform:scale(0);opacity:0}50%{transform:scale(1.3);opacity:1}100%{transform:scale(1);opacity:1}}
-    @media (max-width:480px){.card{padding:.6rem}h2{font-size:1.3rem}.prize{font-size:1.5rem}.money{font-size:1.7rem}.ticket-grid{grid-template-columns:repeat(auto-fit,minmax(35px,1fr))}}
-    @media (min-width:768px){.card{padding:1.2rem;max-width:350px;height:auto}}
+    @media (max-width:480px){.card{padding:.7rem}h2{font-size:1.3rem}.prize{font-size:1.5rem}.money{font-size:1.7rem}.ticket-grid{grid-template-columns:repeat(auto-fit,minmax(40px,1fr))}}
+    @media (min-width:768px){.card{padding:1.3rem;max-width:350px;height:auto}}
   </style>
 </head>
 <body>
@@ -60,24 +61,15 @@
         </ul>
       </div>
       <div class="field">
-        <label>Número (1-300)</label>
+        <label>Números (1-300)</label>
         <div class="ticket-grid" id="ticketGrid"></div>
-        <input type="hidden" id="selectedTicket" required>
       </div>
       <form id="rifaForm">
         <div class="field">
           <label>Nome</label>
           <input id="name" placeholder="João Silva" required>
         </div>
-        <div class="field">
-          <label>Bilhetes</label>
-          <select id="quantity">
-            <option value="1">1 (20 MZN)</option>
-            <option value="2">2 (40 MZN)</option>
-            <option value="5">5 (100 MZN)</option>
-            <option value="10">10 (200 MZN)</option>
-          </select>
-        </div>
+        <div class="total-value" id="totalValue">Total: 0 MZN (0 bilhetes)</div>
         <button type="submit" id="buyBtn">Comprar</button>
       </form>
       <div id="status" class="status"></div>
@@ -91,11 +83,147 @@
       <button class="close-gift" id="closeGift">✕</button>
       <div class="emoji">🎁</div>
       <div class="ticket-code" id="ticketCode"></div>
-      <p>Número reservado!</p>
+      <p>Números reservados!</p>
     </div>
   </div>
 <script>
-let takenTickets=[2,5,10,150];const totalTickets=300,ticketGrid=document.getElementById("ticketGrid"),selectedTicketInput=document.getElementById("selectedTicket"),giftBox=document.getElementById("giftBox"),ticketCode=document.getElementById("ticketCode"),closeGift=document.getElementById("closeGift"),countdownEl=document.getElementById("countdown");function generateTicketGrid(){ticketGrid.innerHTML="";for(let t=1;t<=totalTickets;t++){const e=document.createElement("button");e.className="ticket-btn",e.textContent=t,e.dataset.ticket=t,takenTickets.includes(t)?e.disabled=!0:e.addEventListener("click",()=>selectTicket(t)),ticketGrid.appendChild(e)}}function selectTicket(t){const e=ticketGrid.querySelector(".ticket-btn.selected");e&&e.classList.remove("selected");ticketGrid.querySelector(`[data-ticket="${t}"]`).classList.add("selected"),selectedTicketInput.value=t,ticketCode.textContent=`Bilhete #${t}`,giftBox.classList.add("active")}function updateCountdown(){const t=new Date(),e=t.getDay(),i=7-e+(e===0?0:7),n=new Date(t.getFullYear(),t.getMonth(),t.getDate()+i,23,59,0),s=(n-t)/1e3,a=Math.floor(s/86400),c=Math.floor(s%86400/3600),l=Math.floor(s%3600/60),o=Math.floor(s%60);countdownEl.textContent=`Aguardando Resultados: ${a}d ${c}h ${l}m ${o}s`,s<=0&&setTimeout(updateCountdown,1e3)}closeGift.addEventListener("click",()=>{giftBox.classList.remove("active")}),generateTicketGrid(),updateCountdown(),setInterval(updateCountdown,1e3),document.getElementById("rifaForm").addEventListener("submit",async t=>{t.preventDefault();const e=document.getElementById("buyBtn"),i=document.getElementById("status"),n=document.getElementById("name").value.trim(),c=parseInt(document.getElementById("quantity").value),l=selectedTicketInput.value;if(!n||!l)return i.textContent="Nome e número obrigatórios.",void(i.className="status error");e.disabled=!0,e.textContent="Processando...",i.textContent="Iniciando pagamento...",i.className="status loading";try{const t=await fetch("/api/create-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:n,qty:c,ticket:l,amount:20*c})}),s=await t.json();if(!t.ok)throw new Error(s.message||"Erro no pagamento");i.innerHTML=s.checkout_url?`Pagar: <a href="${s.checkout_url}" target="_blank" style="color:#000;font-weight:700">M-Pesa</a>`:"Aguarde SMS (*150*00#).",i.className="status success",pollPayment(s.payment_id,l)}catch(t){i.textContent="Erro: "+t.message,i.className="status error"}finally{e.disabled=!1,e.textContent="Comprar"}});async function pollPayment(t,e){let i=0;const n=setInterval(async()=>{if(i++,i>20)return void clearInterval(n);try{const s=await fetch(`/api/payment-status/${t}`),a=await s.json();a.status==="confirmed"&&(takenTickets.push(parseInt(e)),generateTicketGrid(),clearInterval(n),document.getElementById("status").innerHTML="Confirmado!<br>Bilhetes reservados.<br>Boa sorte!",document.getElementById("status").className="status success")}catch(t){}},4e3)}
+let takenTickets = [2, 5, 10, 150];
+let selectedTickets = [];
+const totalTickets = 300;
+const ticketPrice = 20;
+const ticketGrid = document.getElementById("ticketGrid");
+const totalValue = document.getElementById("totalValue");
+const giftBox = document.getElementById("giftBox");
+const ticketCode = document.getElementById("ticketCode");
+const closeGift = document.getElementById("closeGift");
+const countdownEl = document.getElementById("countdown");
+
+function generateTicketGrid() {
+  ticketGrid.innerHTML = "";
+  for (let t = 1; t <= totalTickets; t++) {
+    const btn = document.createElement("button");
+    btn.className = "ticket-btn";
+    btn.textContent = t;
+    btn.dataset.ticket = t;
+    if (takenTickets.includes(t)) {
+      btn.disabled = true;
+    } else {
+      btn.addEventListener("click", () => selectTicket(t));
+    }
+    ticketGrid.appendChild(btn);
+  }
+  updateSelectedTickets();
+}
+
+function selectTicket(ticket) {
+  if (selectedTickets.includes(ticket)) {
+    selectedTickets = selectedTickets.filter(t => t !== ticket);
+    ticketGrid.querySelector(`[data-ticket="${ticket}"]`).classList.remove("selected");
+  } else {
+    selectedTickets.push(ticket);
+    ticketGrid.querySelector(`[data-ticket="${ticket}"]`).classList.add("selected");
+  }
+  updateTotalValue();
+  ticketCode.textContent = `Bilhetes #${selectedTickets.join(", #")}`;
+  giftBox.classList.add("active");
+}
+
+function updateTotalValue() {
+  const qty = selectedTickets.length;
+  const total = qty * ticketPrice;
+  totalValue.textContent = `Total: ${total} MZN (${qty} bilhete${qty !== 1 ? 's' : ''})`;
+}
+
+function updateCountdown() {
+  const now = new Date();
+  const day = now.getDay();
+  const daysUntilSunday = 7 - day + (day === 0 ? 0 : 7);
+  const target = new Date(now.getFullYear(), now.getMonth(), now.getDate() + daysUntilSunday, 23, 59, 0);
+  const diff = (target - now) / 1000;
+  const days = Math.floor(diff / 86400);
+  const hours = Math.floor((diff % 86400) / 3600);
+  const minutes = Math.floor((diff % 3600) / 60);
+  const seconds = Math.floor(diff % 60);
+  countdownEl.textContent = `Aguardando Resultados: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+  if (diff <= 0) setTimeout(updateCountdown, 1000);
+}
+
+function updateSelectedTickets() {
+  selectedTickets = selectedTickets.filter(t => !takenTickets.includes(t));
+  ticketGrid.querySelectorAll(".ticket-btn").forEach(btn => {
+    const ticket = parseInt(btn.dataset.ticket);
+    if (selectedTickets.includes(ticket)) {
+      btn.classList.add("selected");
+    } else {
+      btn.classList.remove("selected");
+    }
+  });
+  updateTotalValue();
+}
+
+closeGift.addEventListener("click", () => {
+  giftBox.classList.remove("active");
+});
+
+generateTicketGrid();
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+document.getElementById("rifaForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const buyBtn = document.getElementById("buyBtn");
+  const status = document.getElementById("status");
+  const name = document.getElementById("name").value.trim();
+  const qty = selectedTickets.length;
+  if (!name || qty === 0) {
+    status.textContent = "Nome e pelo menos um número são obrigatórios.";
+    status.className = "status error";
+    return;
+  }
+  buyBtn.disabled = true;
+  buyBtn.textContent = "Processando...";
+  status.textContent = "Iniciando pagamento...";
+  status.className = "status loading";
+  try {
+    const res = await fetch("/api/create-payment", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, tickets: selectedTickets, amount: qty * ticketPrice })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Erro no pagamento");
+    status.innerHTML = data.checkout_url
+      ? `Pagar: <a href="${data.checkout_url}" target="_blank" style="color:#000;font-weight:700">M-Pesa</a>`
+      : "Aguarde SMS (*150*00#).";
+    status.className = "status success";
+    pollPayment(data.payment_id);
+  } catch (err) {
+    status.textContent = "Erro: " + err.message;
+    status.className = "status error";
+  } finally {
+    buyBtn.disabled = false;
+    buyBtn.textContent = "Comprar";
+  }
+});
+
+async function pollPayment(paymentId) {
+  let attempts = 0;
+  const interval = setInterval(async () => {
+    if (attempts++ > 20) return clearInterval(interval);
+    try {
+      const res = await fetch(`/api/payment-status/${paymentId}`);
+      const data = await res.json();
+      if (data.status === "confirmed") {
+        takenTickets.push(...selectedTickets);
+        selectedTickets = [];
+        generateTicketGrid();
+        clearInterval(interval);
+        document.getElementById("status").innerHTML = "Confirmado!<br>Bilhetes reservados.<br>Boa sorte!";
+        document.getElementById("status").className = "status success";
+      }
+    } catch (err) {}
+  }, 4000);
+}
 </script>
 </body>
 </html>
