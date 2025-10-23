@@ -1,383 +1,615 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rifa Diária</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #000;
-            min-height: 100vh;
-            padding: 10px;
-        }
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-        .ticket {
-            width: 38px;
-            height: 38px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 5px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: 1px solid transparent;
-            font-size: 12px;
-        }
-        .ticket.available {
-            background: white;
-            color: #000;
-        }
-        .ticket.available:hover {
-            transform: scale(1.05);
-            border-color: #000;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-        .ticket.selected {
-            background: #000;
-            color: white;
-            transform: scale(1.03);
-            border-color: #4b5563;
-        }
-        .ticket.taken {
-            background: #e5e7eb;
-            color: #9ca3af;
-            cursor: not-allowed;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-        .modal.active {
-            display: flex;
-        }
-        .modal-content {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            max-width: 400px;
-            width: 90%;
-            max-height: 85vh;
-            overflow-y: auto;
-        }
-        .input-field {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #e5e7eb;
-            border-radius: 6px;
-            font-size: 14px;
-            transition: border-color 0.2s;
-        }
-        .input-field:focus {
-            outline: none;
-            border-color: #000;
-        }
-        .input-field.error {
-            border-color: #ef4444;
-        }
-        .btn {
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: none;
-            font-size: 14px;
-        }
-        .btn-primary {
-            background: #000;
-            color: white;
-        }
-        .btn-primary:hover:not(:disabled) {
-            background: #1f2937;
-            transform: translateY(-1px);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-        }
-        .btn-primary:disabled {
-            background: #9ca3af;
-            cursor: not-allowed;
-        }
-        .btn-secondary {
-            background: #e5e7eb;
-            color: #374151;
-        }
-        .btn-secondary:hover {
-            background: #d1d5db;
-        }
-        .error-message {
-            color: #ef4444;
-            font-size: 12px;
-            margin-top: 4px;
-            display: none;
-        }
-        @media (max-width: 640px) {
-            .ticket {
-                width: 32px;
-                height: 32px;
-                font-size: 10px;
-            }
-        }
-    </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Rifa Diária - Versão Final</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { box-sizing: border-box; margin:0; padding:0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #000; min-height:100vh; padding:10px; }
+  .container { max-width:1000px; margin:0 auto; }
+
+  /* Tickets */
+  .ticket { width:38px; height:38px; display:flex; align-items:center; justify-content:center; border-radius:5px; font-weight:600; cursor:pointer; transition: all .15s; border:1px solid transparent; font-size:12px; user-select:none; }
+  .ticket.available { background:white; color:#000; }
+  .ticket.available:hover { transform:scale(1.05); border-color:#000; box-shadow:0 2px 8px rgba(0,0,0,0.12); }
+  .ticket.selected { background:#000; color:white; transform:scale(1.03); border-color:#4b5563; }
+  .ticket.taken { background:#e5e7eb; color:#9ca3af; cursor:not-allowed; }
+
+  /* Modal */
+  .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,.5); z-index:1000; align-items:center; justify-content:center; }
+  .modal.active { display:flex; }
+  .modal-content { background:white; color:black; padding:20px; border-radius:12px; max-width:420px; width:90%; max-height:85vh; overflow-y:auto; }
+
+  .input-field { width:100%; padding:8px; border:1px solid #e5e7eb; border-radius:6px; font-size:14px; transition:border-color .15s; }
+  .input-field:focus { outline:none; border-color:#000; }
+  .input-field.error { border-color:#ef4444; }
+
+  .btn { padding:8px 16px; border-radius:6px; font-weight:600; cursor:pointer; transition:all .15s; border:none; font-size:14px; }
+  .btn-primary { background:#000; color:white; }
+  .btn-primary:hover:not(:disabled) { background:#1f2937; transform: translateY(-1px); box-shadow:0 2px 8px rgba(0,0,0,.2); }
+  .btn-primary:disabled { background:#9ca3af; cursor:not-allowed; }
+  .btn-secondary { background:#e5e7eb; color:#374151; }
+
+  .error-message { color:#ef4444; font-size:12px; margin-top:4px; display:none; }
+
+  /* small animations for draw */
+  .draw-numbers { display:flex; gap:6px; justify-content:center; margin:0.5rem 0; flex-wrap:wrap;}
+  .draw-ball { width:44px; height:44px; border-radius:999px; display:flex; align-items:center; justify-content:center; font-weight:700; background:#111; color:#fff; transform:scale(.9); transition: transform .25s, background .2s; }
+  .draw-ball.pop { transform: scale(1.15); background: linear-gradient(45deg,#0ea5a4,#06b6d4); }
+
+  @media (max-width:640px) { .ticket { width:32px; height:32px; font-size:10px; } }
+</style>
 </head>
 <body>
-    <div class="container">
-        <div class="text-center mb-4">
-            <h1 class="text-3xl font-bold text-white mb-1">🎁 Rifa Diária</h1>
-            <p class="text-white text-base">Escolha até 5 números!</p>
-        </div>
-        <div class="bg-white rounded-xl shadow-xl p-4 mb-4">
-            <div class="text-center">
-                <h2 class="text-xl font-bold text-gray-800 mb-2">⏰ Próximo Sorteio</h2>
-                <div class="flex justify-center gap-2">
-                    <div class="bg-black text-white rounded-md p-2 min-w-[60px]">
-                        <div class="text-2xl font-bold" id="hours">00</div>
-                        <div class="text-xs">Horas</div>
-                    </div>
-                    <div class="bg-black text-white rounded-md p-2 min-w-[60px]">
-                        <div class="text-2xl font-bold" id="minutes">00</div>
-                        <div class="text-xs">Minutos</div>
-                    </div>
-                    <div class="bg-black text-white rounded-md p-2 min-w-[60px]">
-                        <div class="text-2xl font-bold" id="seconds">00</div>
-                        <div class="text-xs">Segundos</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="grid md:grid-cols-3 gap-4">
-            <div class="md:col-span-2 bg-white rounded-xl shadow-xl p-4">
-                <h2 class="text-xl font-bold text-gray-800 mb-2">Escolha seus números</h2>
-                <p id="maxTicketsError" class="error-message">Você pode selecionar no máximo 5 números!</p>
-                <div class="grid grid-cols-10 sm:grid-cols-16 md:grid-cols-20 gap-1" id="ticketGrid"></div>
-            </div>
-            <div class="bg-white rounded-xl shadow-xl p-4">
-                <h2 class="text-xl font-bold text-gray-800 mb-2">Finalizar Compra</h2>
-                <div class="mb-3">
-                    <p class="text-gray-600 mb-1">Números selecionados:</p>
-                    <div class="bg-gray-100 rounded-md p-2 min-h-[50px]">
-                        <div id="selectedNumbers" class="flex flex-wrap gap-1">
-                            <span class="text-gray-400 text-xs">Nenhum número selecionado</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label class="block text-gray-700 font-semibold mb-1">Seu Nome *</label>
-                    <input type="text" id="userName" class="input-field" placeholder="Nome completo" required>
-                    <p id="nameError" class="text-red-500 text-xs mt-1 hidden">Digite seu nome</p>
-                </div>
-                <div class="mb-3">
-                    <label class="block text-gray-700 font-semibold mb-1">Número M-Pesa *</label>
-                    <input type="tel" id="mpesaNumber" class="input-field" placeholder="84XXXXXXX ou 85XXXXXXX" maxlength="9" required>
-                    <p id="mpesaError" class="text-red-500 text-xs mt-1 hidden">Número inválido</p>
-                </div>
-                <div class="bg-gray-100 rounded-md p-3 mb-3">
-                    <div class="flex justify-between items-center mb-1">
-                        <span class="text-gray-700 text-sm">Preço por número:</span>
-                        <span class="font-bold text-gray-800 text-sm">25 MZN</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-gray-700 text-sm">Total:</span>
-                        <span class="text-xl font-bold text-black" id="totalPrice">0 MZN</span>
-                    </div>
-                </div>
-                <button id="purchaseBtn" class="btn btn-primary w-full" disabled>Comprar</button>
-                <p class="text-xs text-gray-500 mt-2 text-center">Pagamento via M-Pesa.</p>
-            </div>
-        </div>
-        <div class="bg-white rounded-xl shadow-xl p-4 mt-4">
-            <h2 class="text-xl font-bold text-gray-800 mb-2">🏆 Últimos Resultados</h2>
-            <div class="grid md:grid-cols-3 gap-2">
-                <div class="bg-black text-white rounded-md p-3">
-                    <div class="text-xs mb-1">Ontem</div>
-                    <div class="text-2xl font-bold">Nº 147</div>
-                    <div class="text-xs mt-1">João Silva - 5.000 MZN</div>
-                </div>
-                <div class="bg-gray-800 text-white rounded-md p-3">
-                    <div class="text-xs mb-1">Há 2 dias</div>
-                    <div class="text-2xl font-bold">Nº 089</div>
-                    <div class="text-xs mt-1">Maria Santos - 5.000 MZN</div>
-                </div>
-                <div class="bg-gray-600 text-white rounded-md p-3">
-                    <div class="text-xs mb-1">Há 3 dias</div>
-                    <div class="text-2xl font-bold">Nº 234</div>
-                    <div class="text-xs mt-1">Pedro Costa - 5.000 MZN</div>
-                </div>
-            </div>
-        </div>
+  <div class="container">
+    <div class="text-center mb-4">
+      <h1 class="text-3xl font-bold text-white mb-1">🎁 Rifa Diária</h1>
+      <p class="text-white text-base">Escolha exatamente 5 números!</p>
     </div>
-    <div id="giftModal" class="modal">
-        <div class="modal-content">
-            <div class="text-center">
-                <div class="text-4xl mb-3">🎉</div>
-                <h2 class="text-2xl font-bold text-gray-800 mb-3">Parabéns!</h2>
-                <p class="text-gray-600 mb-4">Números reservados!</p>
-                <div class="bg-gray-100 rounded-md p-3 mb-4">
-                    <p class="text-gray-700 text-sm mb-1">Números comprados:</p>
-                    <div id="purchasedNumbers" class="flex flex-wrap gap-1 justify-center mb-2"></div>
-                    <p class="text-xl font-bold text-black" id="modalTotal"></p>
-                </div>
-                <div class="bg-blue-50 border-l-4 border-blue-500 p-3 mb-4 text-left">
-                    <p class="text-xs text-gray-700">
-                        <strong>Próximos passos:</strong><br>
-                        1. Notificação M-Pesa no número <strong id="modalMpesa"></strong><br>
-                        2. Confirme o pagamento<br>
-                        3. Números ativados automaticamente
-                    </p>
-                </div>
-                <button id="closeModal" class="btn btn-primary w-full">Entendido!</button>
-            </div>
+
+    <!-- Contador -->
+    <div class="bg-white rounded-xl shadow-xl p-4 mb-4">
+      <div class="text-center">
+        <h2 class="text-xl font-bold text-gray-800 mb-2">⏰ Próximo Sorteio</h2>
+        <div class="flex justify-center gap-2">
+          <div class="bg-black text-white rounded-md p-2 min-w-[60px]">
+            <div class="text-2xl font-bold" id="hours">00</div>
+            <div class="text-xs">Horas</div>
+          </div>
+          <div class="bg-black text-white rounded-md p-2 min-w-[60px]">
+            <div class="text-2xl font-bold" id="minutes">00</div>
+            <div class="text-xs">Minutos</div>
+          </div>
+          <div class="bg-black text-white rounded-md p-2 min-w-[60px]">
+            <div class="text-2xl font-bold" id="seconds">00</div>
+            <div class="text-xs">Segundos</div>
+          </div>
         </div>
+        <p class="text-sm text-gray-600 mt-2">Sorteios diários: 10:00 | 15:00 | 19:00 | 00:00</p>
+      </div>
     </div>
-    <script>
-        let selectedTickets = new Set();
-        let takenTickets = new Set([12, 45, 78, 123, 156, 189, 234, 267]);
-        const TICKET_PRICE = 25;
-        const TOTAL_TICKETS = 10000;
-        const MAX_TICKETS = 5;
-        const ticketGrid = document.getElementById('ticketGrid');
-        const selectedNumbersDiv = document.getElementById('selectedNumbers');
-        const totalPriceSpan = document.getElementById('totalPrice');
-        const purchaseBtn = document.getElementById('purchaseBtn');
-        const userNameInput = document.getElementById('userName');
-        const mpesaNumberInput = document.getElementById('mpesaNumber');
-        const nameError = document.getElementById('nameError');
-        const mpesaError = document.getElementById('mpesaError');
-        const maxTicketsError = document.getElementById('maxTicketsError');
-        const giftModal = document.getElementById('giftModal');
-        const closeModalBtn = document.getElementById('closeModal');
-        function initializeTickets() {
-            for (let i = 1; i <= TOTAL_TICKETS; i++) {
-                const ticket = document.createElement('div');
-                ticket.className = 'ticket ' + (takenTickets.has(i) ? 'taken' : 'available');
-                ticket.textContent = i;
-                ticket.dataset.number = i;
-                if (!takenTickets.has(i)) {
-                    ticket.addEventListener('click', () => toggleTicket(i, ticket));
-                }
-                ticketGrid.appendChild(ticket);
-            }
+
+    <div class="grid md:grid-cols-3 gap-4">
+      <!-- Grid -->
+      <div class="md:col-span-2 bg-white rounded-xl shadow-xl p-4">
+        <h2 class="text-xl font-bold text-gray-800 mb-2">Escolha seus números (1–100)</h2>
+        <p id="maxTicketsError" class="error-message mb-2">Você pode selecionar apenas 5 números!</p>
+        <div id="ticketGrid" class="grid grid-cols-10 sm:grid-cols-10 md:grid-cols-10 gap-1"></div>
+      </div>
+
+      <!-- Painel de Compra -->
+      <div class="bg-white rounded-xl shadow-xl p-4">
+        <div class="flex justify-between items-center mb-3">
+          <h2 class="text-xl font-bold text-gray-800">Finalizar Compra</h2>
+          <div class="text-sm text-gray-600">Saldo: <span id="userBalance">0 MZN</span></div>
+        </div>
+
+        <div class="mb-3">
+          <p class="text-gray-600 mb-1">Números selecionados:</p>
+          <div class="bg-gray-100 rounded-md p-2 min-h-[50px]">
+            <div id="selectedNumbers" class="flex flex-wrap gap-1">
+              <span class="text-gray-400 text-xs">Nenhum número selecionado</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="block text-gray-700 font-semibold mb-1">Seu Nome *</label>
+          <input type="text" id="userName" class="input-field" placeholder="Nome completo" required>
+          <p id="nameError" class="text-red-500 text-xs mt-1 hidden">Digite seu nome</p>
+        </div>
+
+        <div class="mb-3">
+          <label class="block text-gray-700 font-semibold mb-1">Número M-Pesa *</label>
+          <input type="tel" id="mpesaNumber" class="input-field" placeholder="84XXXXXXX ou 85XXXXXXX" maxlength="9" required>
+          <p id="mpesaError" class="text-red-500 text-xs mt-1 hidden">Número inválido</p>
+        </div>
+
+        <div class="bg-gray-100 rounded-md p-3 mb-3">
+          <div class="flex justify-between items-center mb-1">
+            <span class="text-gray-700 text-sm">Preço por aposta:</span>
+            <span class="font-bold text-gray-800 text-sm">25 MZN</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-gray-700 text-sm">Total:</span>
+            <span class="text-xl font-bold text-black" id="totalPrice">0 MZN</span>
+          </div>
+        </div>
+
+        <button id="purchaseBtn" class="btn btn-primary w-full" disabled>Comprar</button>
+        <p class="text-xs text-gray-500 mt-2 text-center">Pagamento via M-Pesa. (Simulado)</p>
+
+        <!-- Histórico do jogador -->
+        <div class="mt-4">
+          <h3 class="font-semibold text-gray-700 mb-2">Seu Histórico (neste navegador)</h3>
+          <div id="playerHistory" class="text-sm text-gray-600 max-h-40 overflow-auto"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Últimos Resultados -->
+    <div class="bg-white rounded-xl shadow-xl p-4 mt-4">
+      <h2 class="text-xl font-bold text-gray-800 mb-2">🏆 Últimos Resultados</h2>
+      <div id="lastResults" class="grid md:grid-cols-3 gap-2"></div>
+    </div>
+  </div>
+
+  <!-- Modal Compra -->
+  <div id="giftModal" class="modal">
+    <div class="modal-content">
+      <div class="text-center">
+        <div class="text-4xl mb-3">🎉</div>
+        <h2 class="text-2xl font-bold text-gray-800 mb-3">Compra Confirmada!</h2>
+        <p class="text-gray-600 mb-4">Números reservados para o próximo sorteio.</p>
+
+        <div class="bg-gray-100 rounded-md p-3 mb-4">
+          <p class="text-gray-700 text-sm mb-1">Números comprados:</p>
+          <div id="purchasedNumbers" class="flex flex-wrap gap-1 justify-center mb-2"></div>
+          <p class="text-xl font-bold text-black" id="modalTotal"></p>
+        </div>
+
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-3 mb-4 text-left">
+          <p class="text-xs text-gray-700">
+            <strong>Próximos passos:</strong><br>
+            1. Notificação M-Pesa no número <strong id="modalMpesa"></strong><br>
+            2. Confirme o pagamento<br>
+            3. Números ativados automaticamente para o próximo sorteio
+          </p>
+        </div>
+
+        <button id="closeModal" class="btn btn-primary w-full">Entendido!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Resultado do Sorteio -->
+  <div id="drawModal" class="modal">
+    <div class="modal-content">
+      <div class="text-center">
+        <div class="text-4xl mb-2">🎲</div>
+        <h2 class="text-2xl font-bold text-gray-800 mb-2">Resultado do Sorteio</h2>
+        <p id="drawTime" class="text-sm text-gray-600 mb-2"></p>
+        <div id="drawNumbers" class="draw-numbers"></div>
+        <div id="drawMessage" class="mb-3 text-gray-800"></div>
+        <div id="drawUserResult" class="mb-2 font-bold text-black"></div>
+        <button id="closeDraw" class="btn btn-primary w-full">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* ====== CONFIG ====== */
+const TICKET_PRICE = 25;
+const MAX_SELECTION = 5;
+const TOTAL_NUMBERS = 100;
+const DRAW_HOURS = [10, 15, 19, 0]; // 0 = midnight (00:00)
+const PRIZE_FULL = 5000;
+const REFUND_ON_3 = 25;
+
+/* ====== STORAGE KEYS ====== */
+const KEY_BALANCE = 'rifa_balance_v1';
+const KEY_PURCHASES = 'rifa_purchases_v1'; // pending purchases
+const KEY_HISTORY = 'rifa_history_v1'; // draws history
+const KEY_PLAYER_HISTORY = 'rifa_player_history_v1'; // this browser purchases processed
+
+/* ====== STATE ====== */
+let selectedTickets = new Set();
+let takenTickets = new Set(); // reserved numbers
+let purchases = loadFromStorage(KEY_PURCHASES, []); // purchases waiting for draw
+let drawsHistory = loadFromStorage(KEY_HISTORY, []); // processed draws
+let playerHistory = loadFromStorage(KEY_PLAYER_HISTORY, []); // purchases made by this browser and processed
+let balance = loadFromStorage(KEY_BALANCE, 500); // default starting balance for demo (500 MZN)
+
+/* ====== DOM ====== */
+const ticketGrid = document.getElementById('ticketGrid');
+const selectedNumbersDiv = document.getElementById('selectedNumbers');
+const totalPriceSpan = document.getElementById('totalPrice');
+const purchaseBtn = document.getElementById('purchaseBtn');
+const userNameInput = document.getElementById('userName');
+const mpesaNumberInput = document.getElementById('mpesaNumber');
+const nameError = document.getElementById('nameError');
+const mpesaError = document.getElementById('mpesaError');
+const maxTicketsError = document.getElementById('maxTicketsError');
+const giftModal = document.getElementById('giftModal');
+const closeModalBtn = document.getElementById('closeModal');
+
+const drawModal = document.getElementById('drawModal');
+const closeDrawBtn = document.getElementById('closeDraw');
+const drawNumbersContainer = document.getElementById('drawNumbers');
+const drawMessage = document.getElementById('drawMessage');
+const drawUserResult = document.getElementById('drawUserResult');
+const drawTimeEl = document.getElementById('drawTime');
+
+const lastResultsDiv = document.getElementById('lastResults');
+const playerHistoryDiv = document.getElementById('playerHistory');
+const userBalanceSpan = document.getElementById('userBalance');
+
+/* ====== HELPERS ====== */
+function loadFromStorage(key, fallback) {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : fallback;
+  } catch (e) {
+    return fallback;
+  }
+}
+function saveToStorage(key, value) {
+  try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) {}
+}
+function formatMoney(n){ return `${n.toLocaleString('pt-PT')} MZN`; }
+function maskMpesa(mp){ if(!mp) return ''; return mp.replace(/^(\d{2})(\d{3})(\d{2})$/,'$1*****$3'); }
+function escapeHtml(txt){ return String(txt).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m])); }
+
+/* ====== UI: Tickets ====== */
+function initializeTickets(){
+  ticketGrid.innerHTML = '';
+  for(let i=1;i<=TOTAL_NUMBERS;i++){
+    const ticket = document.createElement('div');
+    ticket.className = 'ticket ' + (takenTickets.has(i) ? 'taken' : 'available');
+    ticket.textContent = i;
+    ticket.dataset.number = i;
+    if(!takenTickets.has(i)){
+      ticket.addEventListener('click', ()=> toggleTicket(i, ticket));
+    }
+    ticketGrid.appendChild(ticket);
+  }
+  updateUI();
+}
+
+function toggleTicket(number, element){
+  if(takenTickets.has(number)) return;
+  if(selectedTickets.has(number)){
+    selectedTickets.delete(number);
+    element.classList.remove('selected');
+    maxTicketsError.style.display = 'none';
+  } else {
+    if(selectedTickets.size >= MAX_SELECTION){
+      maxTicketsError.style.display = 'block';
+      return;
+    }
+    selectedTickets.add(number);
+    element.classList.add('selected');
+    maxTicketsError.style.display = 'none';
+  }
+  updateUI();
+}
+
+function updateUI(){
+  // selected numbers display
+  if(selectedTickets.size === 0){
+    selectedNumbersDiv.innerHTML = '<span class="text-gray-400 text-xs">Nenhum número selecionado</span>';
+  } else {
+    selectedNumbersDiv.innerHTML = Array.from(selectedTickets).sort((a,b)=>a-b)
+      .map(n=>`<span class="bg-black text-white px-2 py-1 rounded-full text-xs font-semibold">${n}</span>`).join('');
+  }
+  // total price (single aposta = 25 if selected exactly 5)
+  const total = (selectedTickets.size === MAX_SELECTION) ? TICKET_PRICE : 0;
+  totalPriceSpan.textContent = `${total} MZN`;
+  purchaseBtn.disabled = selectedTickets.size !== MAX_SELECTION;
+
+  // update balance display
+  userBalanceSpan.textContent = formatMoney(balance);
+}
+
+/* ====== VALIDATION ====== */
+function validateMpesaNumber(number){
+  const regex = /^(84|85)\d{7}$/;
+  return regex.test(number);
+}
+function validateName(name){
+  return name.trim().length >= 3;
+}
+
+/* ====== PURCHASE FLOW ====== */
+purchaseBtn.addEventListener('click', ()=>{
+  const name = userNameInput.value.trim();
+  const mpesa = mpesaNumberInput.value.trim();
+  let isValid = true;
+  if(!validateName(name)){
+    nameError.classList.remove('hidden');
+    userNameInput.classList.add('error');
+    isValid = false;
+  } else {
+    nameError.classList.add('hidden');
+    userNameInput.classList.remove('error');
+  }
+  if(!validateMpesaNumber(mpesa)){
+    mpesaError.classList.remove('hidden');
+    mpesaNumberInput.classList.add('error');
+    isValid = false;
+  } else {
+    mpesaError.classList.add('hidden');
+    mpesaNumberInput.classList.remove('error');
+  }
+  if(!isValid) return;
+
+  // Check balance
+  if(balance < TICKET_PRICE){
+    alert('Saldo insuficiente. Recarregue para continuar.');
+    return;
+  }
+
+  // Reserve for next draw
+  const numbers = Array.from(selectedTickets).sort((a,b)=>a-b);
+  const nextDrawTime = getNextDrawTime();
+  const purchase = {
+    id: 'p_' + Date.now() + '_' + Math.floor(Math.random()*9999),
+    name, mpesa, numbers, drawTimeISO: nextDrawTime.toISOString(), purchasedAtISO: new Date().toISOString()
+  };
+  purchases.push(purchase);
+  saveToStorage(KEY_PURCHASES, purchases);
+
+  // mark as taken locally
+  numbers.forEach(n=> takenTickets.add(n));
+  initializeTickets();
+
+  // debit balance immediately (simulado como pagamento)
+  balance -= TICKET_PRICE;
+  saveToStorage(KEY_BALANCE, balance);
+  updateUI();
+
+  // show confirmation modal
+  document.getElementById('purchasedNumbers').innerHTML = numbers.map(n=>`<span class="bg-black text-white px-2 py-1 rounded-full text-xs font-semibold">${n}</span>`).join('');
+  document.getElementById('modalTotal').textContent = `Total: ${TICKET_PRICE} MZN`;
+  document.getElementById('modalMpesa').textContent = maskMpesa(mpesa);
+  giftModal.classList.add('active');
+
+  // record player pending history (we'll move to processed on draw)
+  playerHistory.push({ purchaseId: purchase.id, name, mpesa, numbers, drawTimeISO: purchase.drawTimeISO, status: 'pending', purchasedAtISO: purchase.purchasedAtISO });
+  saveToStorage(KEY_PLAYER_HISTORY, playerHistory);
+
+  // reset selection & inputs
+  selectedTickets.clear();
+  userNameInput.value = '';
+  mpesaNumberInput.value = '';
+  updateUI();
+  renderPlayerHistory();
+});
+
+closeModalBtn.addEventListener('click', ()=> giftModal.classList.remove('active'));
+mpesaNumberInput.addEventListener('input', e => e.target.value = e.target.value.replace(/\D/g,''));
+
+/* ====== DRAWS ====== */
+function getNextDrawTime(fromDate = new Date()){
+  const now = new Date(fromDate);
+  for(let h of DRAW_HOURS){
+    const cand = new Date(now);
+    if(h === 0) cand.setHours(24,0,0,0); else cand.setHours(h,0,0,0);
+    if(cand > now) return cand;
+  }
+  // none left today, return first of tomorrow
+  const tomorrow = new Date(now);
+  tomorrow.setDate(tomorrow.getDate()+1);
+  const first = DRAW_HOURS[0];
+  tomorrow.setHours(first,0,0,0);
+  return tomorrow;
+}
+
+function generateDrawNumbers(){
+  const s = new Set();
+  while(s.size < 5) s.add(Math.floor(Math.random()*TOTAL_NUMBERS)+1);
+  return Array.from(s).sort((a,b)=>a-b);
+}
+
+// Execute draw at given Date
+function executeDraw(drawDate){
+  const numbers = generateDrawNumbers();
+  const drawISO = drawDate.toISOString();
+  const winners = [];
+
+  // process purchases matching this draw time
+  for(let i = purchases.length -1; i >=0; i--){
+    const p = purchases[i];
+    if(p.drawTimeISO === drawISO){
+      const hits = p.numbers.filter(n => numbers.includes(n)).length;
+      let prize = 0;
+      if(hits === 3) prize = REFUND_ON_3;
+      if(hits === 5) prize = PRIZE_FULL;
+      winners.push({ name: p.name, mpesa: p.mpesa, numbers: p.numbers, hits, prize });
+      // update player's record if present in playerHistory
+      const ph = playerHistory.find(x=>x.purchaseId === p.id);
+      if(ph){
+        ph.status = 'processed';
+        ph.hits = hits;
+        ph.prize = prize;
+        ph.processedAtISO = new Date().toISOString();
+      }
+      // remove from pending purchases
+      purchases.splice(i,1);
+    }
+  }
+
+  // apply prizes to balance for winners that correspond to this browser's purchases (we only auto-credit if match by mpesa+name)
+  // For demo: credit all playerHistory entries that were processed and belong to this browser
+  playerHistory.forEach(ph=>{
+    if(ph.drawTimeISO === drawISO && ph.status === 'processed'){
+      if(ph.prize && ph.prize > 0){
+        balance += ph.prize;
+      }
+    }
+  });
+
+  // save state
+  drawsHistory.unshift({ timeISO: drawISO, numbers, winners });
+  if(drawsHistory.length > 50) drawsHistory.pop();
+  saveToStorage(KEY_HISTORY, drawsHistory);
+  saveToStorage(KEY_PURCHASES, purchases);
+  saveToStorage(KEY_PLAYER_HISTORY, playerHistory);
+  saveToStorage(KEY_BALANCE, balance);
+
+  // update UI
+  renderLastResults();
+  renderPlayerHistory();
+  updateUI();
+
+  // show draw modal
+  showDrawModal(drawDate, numbers, winners);
+}
+
+/* ====== SCHEDULER ====== */
+// Runs every second, triggers draw exactly when minutes===0 && seconds===0 and hour in DRAW_HOURS
+(function scheduleChecker(){
+  let lastKey = null;
+  setInterval(()=>{
+    const now = new Date();
+    const m = now.getMinutes(), s = now.getSeconds();
+    if(m===0 && s===0){
+      const h = now.getHours();
+      if(DRAW_HOURS.includes(h)){
+        const key = `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}-${h}`;
+        if(key !== lastKey){
+          lastKey = key;
+          // Execute draw using now as draw time
+          executeDraw(new Date(now));
         }
-        function toggleTicket(number, element) {
-            if (selectedTickets.has(number)) {
-                selectedTickets.delete(number);
-                element.classList.remove('selected');
-                maxTicketsError.style.display = 'none';
-            } else {
-                if (selectedTickets.size >= MAX_TICKETS) {
-                    maxTicketsError.style.display = 'block';
-                    return;
-                }
-                selectedTickets.add(number);
-                element.classList.add('selected');
-                maxTicketsError.style.display = 'none';
-            }
-            updateUI();
-        }
-        function updateUI() {
-            if (selectedTickets.size === 0) {
-                selectedNumbersDiv.innerHTML = '<span class="text-gray-400 text-xs">Nenhum número selecionado</span>';
-            } else {
-                selectedNumbersDiv.innerHTML = Array.from(selectedTickets)
-                    .sort((a, b) => a - b)
-                    .map(num => `<span class="bg-black text-white px-2 py-1 rounded-full text-xs font-semibold">${num}</span>`)
-                    .join('');
-            }
-            const total = selectedTickets.size * TICKET_PRICE;
-            totalPriceSpan.textContent = `${total} MZN`;
-            purchaseBtn.disabled = selectedTickets.size === 0;
-        }
-        function validateMpesaNumber(number) {
-            const regex = /^(84|85)\d{7}$/;
-            return regex.test(number);
-        }
-        function validateName(name) {
-            return name.trim().length >= 3;
-        }
-        purchaseBtn.addEventListener('click', () => {
-            const name = userNameInput.value.trim();
-            const mpesaNumber = mpesaNumberInput.value.trim();
-            let isValid = true;
-            if (!validateName(name)) {
-                nameError.classList.remove('hidden');
-                userNameInput.classList.add('error');
-                isValid = false;
-            } else {
-                nameError.classList.add('hidden');
-                userNameInput.classList.remove('error');
-            }
-            if (!validateMpesaNumber(mpesaNumber)) {
-                mpesaError.classList.remove('hidden');
-                mpesaNumberInput.classList.add('error');
-                isValid = false;
-            } else {
-                mpesaError.classList.add('hidden');
-                mpesaNumberInput.classList.remove('error');
-            }
-            if (!isValid) return;
-            const total = selectedTickets.size * TICKET_PRICE;
-            const numbers = Array.from(selectedTickets).sort((a, b) => a - b);
-            numbers.forEach(num => takenTickets.add(num));
-            document.getElementById('purchasedNumbers').innerHTML = numbers
-                .map(num => `<span class="bg-black text-white px-2 py-1 rounded-full text-xs font-semibold">${num}</span>`)
-                .join('');
-            document.getElementById('modalTotal').textContent = `Total: ${total} MZN`;
-            document.getElementById('modalMpesa').textContent = mpesaNumber;
-            giftModal.classList.add('active');
-            selectedTickets.clear();
-            userNameInput.value = '';
-            mpesaNumberInput.value = '';
-            document.querySelectorAll('.ticket').forEach(ticket => {
-                const num = parseInt(ticket.dataset.number);
-                if (numbers.includes(num)) {
-                    ticket.classList.remove('available', 'selected');
-                    ticket.classList.add('taken');
-                    ticket.style.pointerEvents = 'none';
-                } else if (ticket.classList.contains('selected')) {
-                    ticket.classList.remove('selected');
-                }
-            });
-            updateUI();
-        });
-        closeModalBtn.addEventListener('click', () => {
-            giftModal.classList.remove('active');
-        });
-        mpesaNumberInput.addEventListener('input', (e) => {
-            e.target.value = e.target.value.replace(/\D/g, '');
-        });
-        function updateCountdown() {
-            const now = new Date();
-            const tomorrow = new Date(now);
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            tomorrow.setHours(20, 0, 0, 0);
-            const diff = tomorrow - now;
-            const hours = Math.floor(diff / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
-            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
-            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
-        }
-        initializeTickets();
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
-    </script>
+      }
+    }
+  }, 1000);
+})();
+
+/* ====== UI: Last results & player history ====== */
+function renderLastResults(){
+  lastResultsDiv.innerHTML = '';
+  if(drawsHistory.length === 0){
+    // placeholder cards like original
+    lastResultsDiv.innerHTML = `
+      <div class="bg-black text-white rounded-md p-3">
+        <div class="text-xs mb-1">--</div>
+        <div class="text-2xl font-bold">--</div>
+        <div class="text-xs mt-1">--</div>
+      </div>
+      <div class="bg-gray-800 text-white rounded-md p-3">
+        <div class="text-xs mb-1">--</div>
+        <div class="text-2xl font-bold">--</div>
+        <div class="text-xs mt-1">--</div>
+      </div>
+      <div class="bg-gray-600 text-white rounded-md p-3">
+        <div class="text-xs mb-1">--</div>
+        <div class="text-2xl font-bold">--</div>
+        <div class="text-xs mt-1">--</div>
+      </div>
+    `;
+    return;
+  }
+  drawsHistory.slice(0,3).forEach((d, idx)=>{
+    const box = document.createElement('div');
+    const bgClass = idx===0 ? 'bg-black' : (idx===1 ? 'bg-gray-800' : 'bg-gray-600');
+    box.className = `${bgClass} text-white rounded-md p-3`;
+    const timeTxt = new Date(d.timeISO).toLocaleString();
+    const winnersTxt = d.winners.length > 0 ? d.winners.map(w=>escapeHtml(w.name)).join(', ') : 'Nenhum vencedor';
+    box.innerHTML = `<div class="text-xs mb-1">${timeTxt}</div>
+                     <div class="text-2xl font-bold">${d.numbers.join(', ')}</div>
+                     <div class="text-xs mt-1">${winnersTxt}</div>`;
+    lastResultsDiv.appendChild(box);
+  });
+}
+
+function renderPlayerHistory(){
+  playerHistoryDiv.innerHTML = '';
+  if(playerHistory.length === 0){
+    playerHistoryDiv.innerHTML = '<div class="text-xs text-gray-500">Nenhuma aposta registada neste navegador.</div>';
+    return;
+  }
+  playerHistory.slice().reverse().forEach(ph=>{
+    const div = document.createElement('div');
+    div.className = 'mb-2 p-2 border rounded';
+    let statusTxt = '';
+    if(ph.status === 'pending') statusTxt = `<span class="text-yellow-600">Pendente</span> - Sorteio: ${new Date(ph.drawTimeISO).toLocaleString()}`;
+    else statusTxt = `<span class="text-green-600">Processado</span> - ${ph.hits} acertos ${ph.prize ? ' - ' + formatMoney(ph.prize) : ''}`;
+    div.innerHTML = `<div class="text-sm"><strong>${escapeHtml(ph.name)}</strong> (${maskMpesa(ph.mpesa)})</div>
+                     <div class="text-xs text-gray-600">${ph.numbers.join(', ')} — ${statusTxt}</div>`;
+    playerHistoryDiv.appendChild(div);
+  });
+}
+
+/* ====== DRAW MODAL UI ====== */
+function showDrawModal(drawDate, numbers, winners){
+  drawNumbersContainer.innerHTML = '';
+  // create balls with small pop animation
+  numbers.forEach((n, idx)=>{
+    const ball = document.createElement('div');
+    ball.className = 'draw-ball';
+    ball.textContent = n;
+    drawNumbersContainer.appendChild(ball);
+    // pop after small delay
+    setTimeout(()=> ball.classList.add('pop'), 200 + idx*180);
+  });
+
+  // summary message
+  if(winners.length === 0){
+    drawMessage.innerHTML = `<div>Não houve vencedores entre as compras registradas para este sorteio.</div>`;
+  } else {
+    const listHtml = winners.map(w=>{
+      const who = escapeHtml(w.name);
+      if(w.prize >= PRIZE_FULL) return `<div>🏆 ${who} — ${w.hits} acertos → ${formatMoney(w.prize)}</div>`;
+      if(w.prize === REFUND_ON_3) return `<div>✅ ${who} — ${w.hits} acertos → Recuperou ${formatMoney(w.prize)}</div>`;
+      return `<div>${who} — ${w.hits} acertos</div>`;
+    }).join('');
+    drawMessage.innerHTML = `<div class="text-left">${listHtml}</div>`;
+  }
+
+  // highlight if any of the winners belong to this browser (match by mpesa+name)
+  const localWinners = winners.filter(w => playerHistory.some(ph => ph.mpesa === w.mpesa && ph.name === w.name && ph.drawTimeISO === drawDate.toISOString()));
+  if(localWinners.length === 0){
+    drawUserResult.textContent = '';
+  } else {
+    const lw = localWinners[0];
+    if(lw.prize >= PRIZE_FULL){
+      drawUserResult.innerHTML = `🏆 Parabéns ${escapeHtml(lw.name)}! Acertou ${lw.hits} números e ganhou ${formatMoney(lw.prize)}.`;
+    } else if(lw.prize === REFUND_ON_3){
+      drawUserResult.innerHTML = `✅ ${escapeHtml(lw.name)} — Acertou ${lw.hits} e recuperou ${formatMoney(lw.prize)}.`;
+    } else {
+      drawUserResult.innerHTML = `${escapeHtml(lw.name)} — ${lw.hits} acertos.`;
+    }
+  }
+
+  drawTimeEl.textContent = `Hora do sorteio: ${new Date(drawDate).toLocaleString()}`;
+  drawModal.classList.add('active');
+}
+
+/* ====== COUNTDOWN ====== */
+function updateCountdown(){
+  const now = new Date();
+  const next = getNextDrawTime(now);
+  const diff = next - now;
+  const h = Math.floor(diff / (1000*60*60));
+  const m = Math.floor((diff % (1000*60*60)) / (1000*60));
+  const s = Math.floor((diff % (1000*60)) / 1000);
+  document.getElementById('hours').textContent = String(h).padStart(2,'0');
+  document.getElementById('minutes').textContent = String(m).padStart(2,'0');
+  document.getElementById('seconds').textContent = String(s).padStart(2,'0');
+}
+setInterval(updateCountdown, 1000);
+
+/* ====== INIT ====== */
+function init(){
+  // load takenTickets from pending purchases (so reserved numbers persist)
+  takenTickets = new Set();
+  purchases.forEach(p => p.numbers.forEach(n => takenTickets.add(n)));
+
+  // initialize UI
+  initializeTickets();
+  renderLastResults();
+  renderPlayerHistory();
+  updateUI();
+
+  // If there are draws in history older than e.g. 30 days we could trim (optional)
+}
+init();
+
+/* ====== Modal controls ====== */
+closeDrawBtn.addEventListener('click', ()=> {
+  drawModal.classList.remove('active');
+  // remove pop classes for next time
+  document.querySelectorAll('.draw-ball.pop').forEach(el=>el.classList.remove('pop'));
+});
+
+/* ====== Developer notes in the UI (not required) ====== */
+// You can clear storage via console if needed:
+// localStorage.clear();
+
+</script>
 </body>
 </html>
