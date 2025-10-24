@@ -6,6 +6,7 @@
     <title>Rifa Diária - Sistema de Apostas</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /* Design minimalista preto e branco */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -22,75 +23,75 @@
         }
         .ticket-hover:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 min-h-screen text-white">
+<body class="bg-black min-h-screen text-white">
     
     <!-- Tela de Login/Registro -->
     <div id="authScreen" class="min-h-screen flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md fade-in">
+        <div class="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md fade-in border-2 border-black">
             <div class="text-center mb-8">
-                <h1 class="text-4xl font-bold text-gray-800 mb-2">🎲 Rifa Diária</h1>
-                <p class="text-gray-600">Sistema de Apostas Online</p>
+                <h1 class="text-4xl font-bold text-black mb-2">🎲 Rifa Diária</h1>
+                <p class="text-gray-700">Sistema de Apostas Online</p>
             </div>
 
             <!-- Formulário de Login -->
             <div id="loginForm">
-                <h2 class="text-2xl font-semibold text-gray-800 mb-6">Entrar</h2>
+                <h2 class="text-2xl font-semibold text-black mb-6">Entrar</h2>
                 <form id="loginFormElement" class="space-y-4">
                     <div>
-                        <label class="block text-gray-700 mb-2">Número M-Pesa</label>
+                        <label class="block text-black mb-2 font-medium">Número M-Pesa</label>
                         <input type="text" id="loginMpesa" placeholder="84XXXXXXX ou 85XXXXXXX" 
-                               class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none text-gray-800"
+                               class="w-full px-4 py-3 rounded-lg border-2 border-black focus:border-gray-600 outline-none text-black"
                                required pattern="8[45]\d{7}">
                     </div>
                     <div>
-                        <label class="block text-gray-700 mb-2">Senha</label>
+                        <label class="block text-black mb-2 font-medium">Senha</label>
                         <input type="password" id="loginPassword" placeholder="Mínimo 4 caracteres"
-                               class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none text-gray-800"
+                               class="w-full px-4 py-3 rounded-lg border-2 border-black focus:border-gray-600 outline-none text-black"
                                required minlength="4">
                     </div>
-                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition duration-200">
+                    <button type="submit" class="w-full bg-black hover:bg-gray-800 text-white font-semibold py-3 rounded-lg transition duration-200">
                         Entrar
                     </button>
                 </form>
-                <p class="text-center mt-6 text-gray-600">
+                <p class="text-center mt-6 text-gray-700">
                     Ainda não tem conta? 
-                    <button onclick="toggleAuthForm()" class="text-blue-600 hover:text-blue-700 font-semibold">Registrar</button>
+                    <button onclick="toggleAuthForm()" class="text-black hover:text-gray-700 font-semibold underline">Registrar</button>
                 </p>
             </div>
 
             <!-- Formulário de Registro -->
             <div id="registerForm" class="hidden">
-                <h2 class="text-2xl font-semibold text-gray-800 mb-6">Criar Conta</h2>
+                <h2 class="text-2xl font-semibold text-black mb-6">Criar Conta</h2>
                 <form id="registerFormElement" class="space-y-4">
                     <div>
-                        <label class="block text-gray-700 mb-2">Nome Completo</label>
+                        <label class="block text-black mb-2 font-medium">Nome Completo</label>
                         <input type="text" id="registerName" placeholder="Seu nome completo"
-                               class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 outline-none text-gray-800"
+                               class="w-full px-4 py-3 rounded-lg border-2 border-black focus:border-gray-600 outline-none text-black"
                                required>
                     </div>
                     <div>
-                        <label class="block text-gray-700 mb-2">Número M-Pesa</label>
+                        <label class="block text-black mb-2 font-medium">Número M-Pesa</label>
                         <input type="text" id="registerMpesa" placeholder="84XXXXXXX ou 85XXXXXXX"
-                               class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 outline-none text-gray-800"
+                               class="w-full px-4 py-3 rounded-lg border-2 border-black focus:border-gray-600 outline-none text-black"
                                required pattern="8[45]\d{7}">
                     </div>
                     <div>
-                        <label class="block text-gray-700 mb-2">Senha</label>
+                        <label class="block text-black mb-2 font-medium">Senha</label>
                         <input type="password" id="registerPassword" placeholder="Mínimo 4 caracteres"
-                               class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 outline-none text-gray-800"
+                               class="w-full px-4 py-3 rounded-lg border-2 border-black focus:border-gray-600 outline-none text-black"
                                required minlength="4">
                     </div>
-                    <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition duration-200">
+                    <button type="submit" class="w-full bg-black hover:bg-gray-800 text-white font-semibold py-3 rounded-lg transition duration-200">
                         Criar Conta
                     </button>
                 </form>
-                <p class="text-center mt-6 text-gray-600">
+                <p class="text-center mt-6 text-gray-700">
                     Já tem conta? 
-                    <button onclick="toggleAuthForm()" class="text-blue-600 hover:text-blue-700 font-semibold">Entrar</button>
+                    <button onclick="toggleAuthForm()" class="text-black hover:text-gray-700 font-semibold underline">Entrar</button>
                 </p>
             </div>
         </div>
@@ -100,37 +101,37 @@
     <div id="rifaScreen" class="hidden min-h-screen p-4 pb-20">
         <div class="max-w-6xl mx-auto">
             <!-- Header -->
-            <div class="bg-white rounded-2xl shadow-xl p-6 mb-6 fade-in">
+            <div class="bg-white rounded-xl shadow-xl p-6 mb-6 fade-in border-2 border-white">
                 <div class="flex justify-between items-center flex-wrap gap-4">
                     <div>
-                        <h1 class="text-3xl font-bold text-gray-800">🎲 Rifa Diária</h1>
-                        <p class="text-gray-600">Bem-vindo, <span id="userName" class="font-semibold"></span></p>
+                        <h1 class="text-3xl font-bold text-black">🎲 Rifa Diária</h1>
+                        <p class="text-gray-700">Bem-vindo, <span id="userName" class="font-semibold"></span></p>
                     </div>
                     <div class="flex items-center gap-4">
                         <div class="text-right">
-                            <p class="text-sm text-gray-600">Saldo Atual</p>
-                            <p class="text-2xl font-bold text-green-600"><span id="userBalance">500</span> MZN</p>
+                            <p class="text-sm text-gray-700">Saldo Atual</p>
+                            <p class="text-2xl font-bold text-black"><span id="userBalance">500</span> MZN</p>
                         </div>
-                        <button onclick="logout()" class="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg transition duration-200">
+                        <button onclick="logout()" class="bg-black hover:bg-gray-800 text-white px-6 py-2 rounded-lg transition duration-200 font-medium">
                             Sair
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Contador Regressivo -->
-            <div class="bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl shadow-xl p-6 mb-6 fade-in">
+            <!-- Contador regressivo atualizado para 3 minutos -->
+            <div class="bg-white rounded-xl shadow-xl p-6 mb-6 fade-in border-2 border-white">
                 <div class="text-center">
-                    <p class="text-lg mb-2">⏰ Próximo Sorteio em:</p>
-                    <p id="countdown" class="text-4xl font-bold pulse-animation">--:--:--</p>
-                    <p class="text-sm mt-2 opacity-90">Sorteios: 10:00 | 15:00 | 19:00 | 00:00</p>
+                    <p class="text-lg mb-2 text-black font-medium">⏰ Próximo Sorteio em:</p>
+                    <p id="countdown" class="text-4xl font-bold pulse-animation text-black">03:00</p>
+                    <p class="text-sm mt-2 text-gray-700">Sorteios automáticos a cada 3 minutos</p>
                 </div>
             </div>
 
             <!-- Seleção de Números -->
-            <div class="bg-white rounded-2xl shadow-xl p-6 mb-6 fade-in">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">Escolha 5 Números (1-100)</h2>
-                <p class="text-gray-600 mb-4">Custo: <span class="font-bold text-green-600">25 MZN</span> por aposta</p>
+            <div class="bg-white rounded-xl shadow-xl p-6 mb-6 fade-in border-2 border-white">
+                <h2 class="text-2xl font-bold text-black mb-4">Escolha 5 Números (1-100)</h2>
+                <p class="text-gray-700 mb-4">Custo: <span class="font-bold text-black">25 MZN</span> por aposta</p>
                 
                 <div id="numbersGrid" class="grid grid-cols-10 gap-2 mb-6">
                     <!-- Números gerados via JavaScript -->
@@ -138,44 +139,44 @@
 
                 <div class="flex justify-between items-center flex-wrap gap-4">
                     <div>
-                        <p class="text-gray-700">Números selecionados: <span id="selectedCount" class="font-bold text-blue-600">0</span>/5</p>
+                        <p class="text-black font-medium">Números selecionados: <span id="selectedCount" class="font-bold">0</span>/5</p>
                         <div id="selectedNumbers" class="flex gap-2 mt-2 flex-wrap"></div>
                     </div>
                     <button id="buyButton" onclick="buyTicket()" disabled
-                            class="bg-green-600 hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold px-8 py-3 rounded-lg transition duration-200">
+                            class="bg-black hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold px-8 py-3 rounded-lg transition duration-200">
                         Comprar Bilhete
                     </button>
                 </div>
             </div>
 
             <!-- Histórico do Jogador -->
-            <div class="bg-white rounded-2xl shadow-xl p-6 mb-6 fade-in">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">📋 Minhas Apostas</h2>
+            <div class="bg-white rounded-xl shadow-xl p-6 mb-6 fade-in border-2 border-white">
+                <h2 class="text-2xl font-bold text-black mb-4">📋 Minhas Apostas</h2>
                 <div id="playerHistory" class="space-y-3">
-                    <p class="text-gray-500 text-center py-4">Nenhuma aposta ainda</p>
+                    <p class="text-gray-600 text-center py-4">Nenhuma aposta ainda</p>
                 </div>
             </div>
 
             <!-- Histórico de Sorteios -->
-            <div class="bg-white rounded-2xl shadow-xl p-6 fade-in">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">🏆 Últimos Sorteios</h2>
+            <div class="bg-white rounded-xl shadow-xl p-6 fade-in border-2 border-white">
+                <h2 class="text-2xl font-bold text-black mb-4">🏆 Últimos Sorteios</h2>
                 <div id="drawHistory" class="space-y-3">
-                    <p class="text-gray-500 text-center py-4">Nenhum sorteio realizado ainda</p>
+                    <p class="text-gray-600 text-center py-4">Nenhum sorteio realizado ainda</p>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Modal de Compra Confirmada -->
-    <div id="purchaseModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full fade-in">
+    <div id="purchaseModal" class="hidden fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full fade-in border-2 border-black">
             <div class="text-center">
                 <div class="text-6xl mb-4">✅</div>
-                <h2 class="text-3xl font-bold text-gray-800 mb-4">Compra Confirmada!</h2>
-                <p class="text-gray-600 mb-2">Seus números:</p>
+                <h2 class="text-3xl font-bold text-black mb-4">Compra Confirmada!</h2>
+                <p class="text-gray-700 mb-2 font-medium">Seus números:</p>
                 <div id="purchasedNumbers" class="flex justify-center gap-2 mb-4 flex-wrap"></div>
-                <p class="text-gray-600 mb-6">Boa sorte no próximo sorteio!</p>
-                <button onclick="closePurchaseModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg transition duration-200">
+                <p class="text-gray-700 mb-6">Boa sorte no próximo sorteio!</p>
+                <button onclick="closePurchaseModal()" class="bg-black hover:bg-gray-800 text-white font-semibold px-8 py-3 rounded-lg transition duration-200">
                     Fechar
                 </button>
             </div>
@@ -183,15 +184,15 @@
     </div>
 
     <!-- Modal de Resultado do Sorteio -->
-    <div id="resultModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full fade-in">
+    <div id="resultModal" class="hidden fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full fade-in border-2 border-black">
             <div class="text-center">
                 <div id="resultIcon" class="text-6xl mb-4">🎉</div>
-                <h2 id="resultTitle" class="text-3xl font-bold text-gray-800 mb-4">Resultado do Sorteio</h2>
-                <p class="text-gray-600 mb-2">Números sorteados:</p>
+                <h2 id="resultTitle" class="text-3xl font-bold text-black mb-4">Resultado do Sorteio</h2>
+                <p class="text-gray-700 mb-2 font-medium">Números sorteados:</p>
                 <div id="drawnNumbers" class="flex justify-center gap-2 mb-4 flex-wrap"></div>
                 <div id="resultMessage" class="text-lg font-semibold mb-6"></div>
-                <button onclick="closeResultModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg transition duration-200">
+                <button onclick="closeResultModal()" class="bg-black hover:bg-gray-800 text-white font-semibold px-8 py-3 rounded-lg transition duration-200">
                     Fechar
                 </button>
             </div>
@@ -202,11 +203,13 @@
         // ========== CONSTANTES E VARIÁVEIS GLOBAIS ==========
         const TICKET_COST = 25;
         const INITIAL_BALANCE = 500;
-        const DRAW_TIMES = ['10:00', '15:00', '19:00', '00:00'];
+        const DRAW_INTERVAL = 180; // 3 minutos em segundos
         
         let currentUser = null;
         let selectedNumbers = [];
         let balance = INITIAL_BALANCE;
+        let nextDrawTime = null;
+        let countdownInterval = null;
 
         // ========== FUNÇÕES DE AUTENTICAÇÃO ==========
         
@@ -263,6 +266,9 @@
             sessionStorage.removeItem('rifa_session');
             currentUser = null;
             selectedNumbers = [];
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
             document.getElementById('authScreen').classList.remove('hidden');
             document.getElementById('rifaScreen').classList.add('hidden');
         }
@@ -273,10 +279,9 @@
             document.getElementById('userName').textContent = currentUser.name;
             updateBalance();
             generateNumbersGrid();
-            updateCountdown();
+            initializeDrawSystem();
             loadPlayerHistory();
             loadDrawHistory();
-            checkPendingDraws();
         }
 
         // ========== FUNÇÕES DA RIFA ==========
@@ -288,7 +293,7 @@
             for (let i = 1; i <= 100; i++) {
                 const button = document.createElement('button');
                 button.textContent = i;
-                button.className = 'ticket-hover bg-gray-100 hover:bg-blue-500 hover:text-white text-gray-800 font-semibold py-3 rounded-lg transition duration-200';
+                button.className = 'ticket-hover bg-white hover:bg-black hover:text-white text-black font-semibold py-3 rounded-lg transition duration-200 border-2 border-black';
                 button.onclick = () => toggleNumber(i, button);
                 grid.appendChild(button);
             }
@@ -299,16 +304,16 @@
             
             if (index > -1) {
                 selectedNumbers.splice(index, 1);
-                button.classList.remove('bg-blue-600', 'text-white');
-                button.classList.add('bg-gray-100', 'text-gray-800');
+                button.classList.remove('bg-black', 'text-white');
+                button.classList.add('bg-white', 'text-black');
             } else {
                 if (selectedNumbers.length >= 5) {
                     alert('Você já selecionou 5 números!');
                     return;
                 }
                 selectedNumbers.push(number);
-                button.classList.remove('bg-gray-100', 'text-gray-800');
-                button.classList.add('bg-blue-600', 'text-white');
+                button.classList.remove('bg-white', 'text-black');
+                button.classList.add('bg-black', 'text-white');
             }
 
             selectedNumbers.sort((a, b) => a - b);
@@ -320,7 +325,7 @@
             
             const container = document.getElementById('selectedNumbers');
             container.innerHTML = selectedNumbers.map(num => 
-                `<span class="bg-blue-600 text-white px-3 py-1 rounded-full font-semibold">${num}</span>`
+                `<span class="bg-black text-white px-3 py-1 rounded-full font-semibold border-2 border-black">${num}</span>`
             ).join('');
 
             document.getElementById('buyButton').disabled = selectedNumbers.length !== 5;
@@ -370,73 +375,51 @@
 
         // ========== FUNÇÕES DE SORTEIO ==========
 
-        function getNextDrawTime() {
-            const now = new Date();
-            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-            
-            for (let time of DRAW_TIMES) {
-                const [hours, minutes] = time.split(':').map(Number);
-                const drawTime = new Date(today);
-                drawTime.setHours(hours, minutes, 0, 0);
-                
-                if (drawTime > now) {
-                    return drawTime;
-                }
+        function initializeDrawSystem() {
+            // Verificar se há um próximo sorteio agendado
+            const savedNextDraw = localStorage.getItem('rifa_next_draw_time');
+            const now = Date.now();
+
+            if (savedNextDraw && parseInt(savedNextDraw) > now) {
+                nextDrawTime = parseInt(savedNextDraw);
+            } else {
+                // Agendar próximo sorteio em 3 minutos
+                nextDrawTime = now + (DRAW_INTERVAL * 1000);
+                localStorage.setItem('rifa_next_draw_time', nextDrawTime.toString());
             }
-            
-            // Se passou de todos os horários de hoje, próximo é 10:00 de amanhã
-            const tomorrow = new Date(today);
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            tomorrow.setHours(10, 0, 0, 0);
-            return tomorrow;
+
+            startCountdown();
         }
 
-        function updateCountdown() {
-            const countdownElement = document.getElementById('countdown');
-            
-            setInterval(() => {
-                const now = new Date();
-                const nextDraw = getNextDrawTime();
-                const diff = nextDraw - now;
+        function startCountdown() {
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
 
-                const hours = Math.floor(diff / (1000 * 60 * 60));
-                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            countdownInterval = setInterval(() => {
+                const now = Date.now();
+                const diff = nextDrawTime - now;
+
+                if (diff <= 0) {
+                    performDraw();
+                    // Agendar próximo sorteio
+                    nextDrawTime = Date.now() + (DRAW_INTERVAL * 1000);
+                    localStorage.setItem('rifa_next_draw_time', nextDrawTime.toString());
+                }
+
+                const minutes = Math.floor(diff / (1000 * 60));
                 const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-                countdownElement.textContent = 
-                    `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-
-                // Verificar se é hora de sortear
-                if (hours === 0 && minutes === 0 && seconds === 0) {
-                    performDraw();
-                }
+                document.getElementById('countdown').textContent = 
+                    `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
             }, 1000);
-        }
-
-        function checkPendingDraws() {
-            const lastDraw = localStorage.getItem('rifa_last_draw_time');
-            const now = new Date();
-            
-            if (!lastDraw) {
-                return;
-            }
-
-            const lastDrawDate = new Date(lastDraw);
-            const nextScheduledDraw = getNextDrawTime();
-            
-            // Se o último sorteio foi há mais de 4 horas e há compras pendentes, realizar sorteio
-            const hoursSinceLastDraw = (now - lastDrawDate) / (1000 * 60 * 60);
-            const purchases = JSON.parse(localStorage.getItem('rifa_purchases_v1') || '[]');
-            
-            if (hoursSinceLastDraw >= 4 && purchases.length > 0) {
-                performDraw();
-            }
         }
 
         function performDraw() {
             const purchases = JSON.parse(localStorage.getItem('rifa_purchases_v1') || '[]');
             
             if (purchases.length === 0) {
+                console.log('[v0] Nenhuma aposta para sortear');
                 return;
             }
 
@@ -450,8 +433,12 @@
             }
             drawnNumbers.sort((a, b) => a - b);
 
+            console.log('[v0] Sorteio realizado:', drawnNumbers);
+
             // Verificar vencedores
             const results = [];
+            const balanceUpdates = {};
+
             purchases.forEach(purchase => {
                 const matches = purchase.numbers.filter(num => drawnNumbers.includes(num)).length;
                 let prize = 0;
@@ -473,9 +460,24 @@
                     status
                 });
 
-                // Atualizar saldo do usuário
-                if (prize > 0 && purchase.user === currentUser.mpesa) {
-                    balance += prize;
+                // Acumular prêmios por usuário
+                if (prize > 0) {
+                    if (!balanceUpdates[purchase.user]) {
+                        balanceUpdates[purchase.user] = 0;
+                    }
+                    balanceUpdates[purchase.user] += prize;
+                }
+            });
+
+            // Atualizar saldos de todos os usuários
+            Object.keys(balanceUpdates).forEach(userMpesa => {
+                const currentBalance = parseInt(localStorage.getItem(`rifa_balance_${userMpesa}`) || INITIAL_BALANCE);
+                const newBalance = currentBalance + balanceUpdates[userMpesa];
+                localStorage.setItem(`rifa_balance_${userMpesa}`, newBalance.toString());
+
+                // Se for o usuário atual, atualizar na tela
+                if (currentUser && userMpesa === currentUser.mpesa) {
+                    balance = newBalance;
                     updateBalance();
                 }
             });
@@ -485,19 +487,20 @@
             history.unshift({
                 timestamp: new Date().toISOString(),
                 numbers: drawnNumbers,
-                results
+                results,
+                totalBets: purchases.length
             });
-            localStorage.setItem('rifa_history_v1', JSON.stringify(history.slice(0, 10)));
+            localStorage.setItem('rifa_history_v1', JSON.stringify(history.slice(0, 20)));
 
-            // Salvar histórico do jogador
+            // Salvar histórico individual de cada jogador
             const playerHistory = JSON.parse(localStorage.getItem('rifa_player_history_v1') || '{}');
-            if (!playerHistory[currentUser.mpesa]) {
-                playerHistory[currentUser.mpesa] = [];
-            }
             
-            const userResults = results.filter(r => r.user === currentUser.mpesa);
-            userResults.forEach(result => {
-                playerHistory[currentUser.mpesa].unshift({
+            results.forEach(result => {
+                if (!playerHistory[result.user]) {
+                    playerHistory[result.user] = [];
+                }
+                
+                playerHistory[result.user].unshift({
                     timestamp: new Date().toISOString(),
                     drawnNumbers,
                     myNumbers: result.numbers,
@@ -506,19 +509,26 @@
                     status: result.status
                 });
             });
+            
             localStorage.setItem('rifa_player_history_v1', JSON.stringify(playerHistory));
 
             // Limpar compras pendentes
             localStorage.setItem('rifa_purchases_v1', '[]');
-            localStorage.setItem('rifa_last_draw_time', new Date().toISOString());
 
-            // Mostrar resultado para o usuário atual
-            if (userResults.length > 0) {
-                showResultModal(drawnNumbers, userResults[0]);
+            // Mostrar resultado para o usuário atual se ele participou
+            if (currentUser) {
+                const userResults = results.filter(r => r.user === currentUser.mpesa);
+                if (userResults.length > 0) {
+                    // Mostrar o melhor resultado se houver múltiplas apostas
+                    const bestResult = userResults.reduce((best, current) => 
+                        current.prize > best.prize ? current : best
+                    );
+                    showResultModal(drawnNumbers, bestResult);
+                }
+                
+                loadPlayerHistory();
+                loadDrawHistory();
             }
-
-            loadPlayerHistory();
-            loadDrawHistory();
         }
 
         // ========== FUNÇÕES DE HISTÓRICO ==========
@@ -526,32 +536,60 @@
         function loadPlayerHistory() {
             const playerHistory = JSON.parse(localStorage.getItem('rifa_player_history_v1') || '{}');
             const userHistory = playerHistory[currentUser.mpesa] || [];
+            
+            // Buscar apostas pendentes do usuário
+            const purchases = JSON.parse(localStorage.getItem('rifa_purchases_v1') || '[]');
+            const userPendingBets = purchases.filter(p => p.user === currentUser.mpesa);
+            
             const container = document.getElementById('playerHistory');
 
-            if (userHistory.length === 0) {
-                container.innerHTML = '<p class="text-gray-500 text-center py-4">Nenhuma aposta ainda</p>';
+            if (userHistory.length === 0 && userPendingBets.length === 0) {
+                container.innerHTML = '<p class="text-gray-600 text-center py-4">Nenhuma aposta ainda</p>';
                 return;
             }
 
-            container.innerHTML = userHistory.slice(0, 5).map(entry => `
-                <div class="border border-gray-200 rounded-lg p-4">
+            let html = '';
+
+            // Mostrar apostas pendentes primeiro
+            if (userPendingBets.length > 0) {
+                html += userPendingBets.map(bet => `
+                    <div class="border-2 border-black rounded-lg p-4 bg-yellow-50">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <p class="text-sm text-gray-700">${new Date(bet.timestamp).toLocaleString('pt-BR')}</p>
+                                <p class="font-semibold text-black">Meus números: ${bet.numbers.join(', ')}</p>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-sm font-semibold bg-yellow-400 text-black border-2 border-black">
+                                ⏳ Aguardando Sorteio
+                            </span>
+                        </div>
+                        <p class="text-sm text-black">Custo: <span class="font-bold">${bet.cost} MZN</span></p>
+                    </div>
+                `).join('');
+            }
+
+            // Mostrar histórico de resultados
+            html += userHistory.slice(0, 10).map(entry => `
+                <div class="border-2 border-black rounded-lg p-4 bg-white">
                     <div class="flex justify-between items-start mb-2">
                         <div>
-                            <p class="text-sm text-gray-600">${new Date(entry.timestamp).toLocaleString('pt-BR')}</p>
-                            <p class="font-semibold text-gray-800">Meus números: ${entry.myNumbers.join(', ')}</p>
-                            <p class="text-sm text-gray-600">Sorteados: ${entry.drawnNumbers.join(', ')}</p>
+                            <p class="text-sm text-gray-700">${new Date(entry.timestamp).toLocaleString('pt-BR')}</p>
+                            <p class="font-semibold text-black">Meus números: ${entry.myNumbers.join(', ')}</p>
+                            <p class="text-sm text-gray-700">Sorteados: ${entry.drawnNumbers.join(', ')}</p>
                         </div>
-                        <span class="px-3 py-1 rounded-full text-sm font-semibold ${
-                            entry.status === 'GANHOU!' ? 'bg-green-100 text-green-800' :
-                            entry.status === 'Reembolso' ? 'bg-blue-100 text-blue-800' :
-                            'bg-gray-100 text-gray-800'
+                        <span class="px-3 py-1 rounded-full text-sm font-semibold border-2 ${
+                            entry.status === 'GANHOU!' ? 'bg-black text-white border-black' :
+                            entry.status === 'Reembolso' ? 'bg-white text-black border-black' :
+                            'bg-gray-200 text-gray-700 border-gray-400'
                         }">
                             ${entry.status}
                         </span>
                     </div>
-                    <p class="text-sm">Acertos: <span class="font-bold">${entry.matches}</span> | Prêmio: <span class="font-bold text-green-600">${entry.prize} MZN</span></p>
+                    <p class="text-sm text-black">Acertos: <span class="font-bold">${entry.matches}</span> | Prêmio: <span class="font-bold">${entry.prize} MZN</span></p>
                 </div>
             `).join('');
+
+            container.innerHTML = html;
         }
 
         function loadDrawHistory() {
@@ -559,17 +597,38 @@
             const container = document.getElementById('drawHistory');
 
             if (history.length === 0) {
-                container.innerHTML = '<p class="text-gray-500 text-center py-4">Nenhum sorteio realizado ainda</p>';
+                container.innerHTML = '<p class="text-gray-600 text-center py-4">Nenhum sorteio realizado ainda</p>';
                 return;
             }
 
-            container.innerHTML = history.slice(0, 5).map(draw => `
-                <div class="border border-gray-200 rounded-lg p-4">
-                    <p class="text-sm text-gray-600 mb-2">${new Date(draw.timestamp).toLocaleString('pt-BR')}</p>
-                    <p class="font-semibold text-gray-800">Números: ${draw.numbers.join(', ')}</p>
-                    <p class="text-sm text-gray-600 mt-1">${draw.results.length} apostas participaram</p>
-                </div>
-            `).join('');
+            container.innerHTML = history.slice(0, 3).map(draw => {
+                const winners = draw.results.filter(r => r.prize > 0);
+                const totalPrizes = winners.reduce((sum, r) => sum + r.prize, 0);
+                
+                return `
+                    <div class="border-2 border-black rounded-lg p-4 bg-white">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <p class="text-sm text-gray-700 mb-1">${new Date(draw.timestamp).toLocaleString('pt-BR')}</p>
+                                <p class="font-bold text-black text-lg">Números: ${draw.numbers.join(', ')}</p>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-black text-white border-2 border-black">
+                                ${draw.totalBets || draw.results.length} aposta(s)
+                            </span>
+                        </div>
+                        ${winners.length > 0 ? `
+                            <div class="mt-2 pt-2 border-t-2 border-gray-200">
+                                <p class="text-sm text-gray-700">
+                                    <span class="font-semibold text-black">${winners.length}</span> vencedor(es) | 
+                                    Prêmios: <span class="font-bold text-black">${totalPrizes} MZN</span>
+                                </p>
+                            </div>
+                        ` : `
+                            <p class="text-sm text-gray-600 mt-2">Nenhum vencedor neste sorteio</p>
+                        `}
+                    </div>
+                `;
+            }).join('');
         }
 
         // ========== FUNÇÕES DE MODAL ==========
@@ -579,7 +638,7 @@
             const numbersContainer = document.getElementById('purchasedNumbers');
             
             numbersContainer.innerHTML = selectedNumbers.map(num => 
-                `<span class="bg-blue-600 text-white px-4 py-2 rounded-full font-bold text-lg">${num}</span>`
+                `<span class="bg-black text-white px-4 py-2 rounded-full font-bold text-lg border-2 border-black">${num}</span>`
             ).join('');
             
             modal.classList.remove('hidden');
@@ -597,21 +656,21 @@
             const titleContainer = document.getElementById('resultTitle');
 
             numbersContainer.innerHTML = drawnNumbers.map(num => 
-                `<span class="bg-purple-600 text-white px-4 py-2 rounded-full font-bold text-lg">${num}</span>`
+                `<span class="bg-black text-white px-4 py-2 rounded-full font-bold text-lg border-2 border-black">${num}</span>`
             ).join('');
 
             if (result.status === 'GANHOU!') {
                 iconContainer.textContent = '🎉';
                 titleContainer.textContent = 'PARABÉNS!';
-                messageContainer.innerHTML = `<p class="text-green-600">Você acertou 5 números!</p><p class="text-2xl font-bold text-green-600 mt-2">Prêmio: ${result.prize} MZN</p>`;
+                messageContainer.innerHTML = `<p class="text-black">Você acertou 5 números!</p><p class="text-2xl font-bold text-black mt-2">Prêmio: ${result.prize} MZN</p>`;
             } else if (result.status === 'Reembolso') {
                 iconContainer.textContent = '💰';
                 titleContainer.textContent = 'Reembolso!';
-                messageContainer.innerHTML = `<p class="text-blue-600">Você acertou 3 números!</p><p class="text-xl font-bold text-blue-600 mt-2">Reembolso: ${result.prize} MZN</p>`;
+                messageContainer.innerHTML = `<p class="text-black">Você acertou 3 números!</p><p class="text-xl font-bold text-black mt-2">Reembolso: ${result.prize} MZN</p>`;
             } else {
                 iconContainer.textContent = '😔';
                 titleContainer.textContent = 'Não foi desta vez';
-                messageContainer.innerHTML = `<p class="text-gray-600">Você acertou ${result.matches} número(s)</p><p class="text-sm text-gray-500 mt-2">Tente novamente!</p>`;
+                messageContainer.innerHTML = `<p class="text-gray-700">Você acertou ${result.matches} número(s)</p><p class="text-sm text-gray-600 mt-2">Tente novamente!</p>`;
             }
 
             modal.classList.remove('hidden');
