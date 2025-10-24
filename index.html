@@ -25,6 +25,21 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
+        /* Adicionando scroll para históricos */
+        .history-scroll {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .history-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .history-scroll::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .history-scroll::-webkit-scrollbar-thumb {
+            background: #000;
+            border-radius: 3px;
+        }
     </style>
 </head>
 <body class="bg-black min-h-screen text-white">
@@ -100,68 +115,61 @@
     <!-- Tela Principal da Rifa -->
     <div id="rifaScreen" class="hidden min-h-screen p-4 pb-20">
         <div class="max-w-6xl mx-auto">
-            <!-- Header -->
-            <div class="bg-white rounded-xl shadow-xl p-6 mb-6 fade-in border-2 border-white">
-                <div class="flex justify-between items-center flex-wrap gap-4">
+            <!-- Header sem saldo -->
+            <div class="bg-white rounded-lg shadow-lg p-4 mb-4 fade-in border-2 border-white">
+                <div class="flex justify-between items-center flex-wrap gap-3">
                     <div>
-                        <h1 class="text-3xl font-bold text-black">🎲 Rifa Diária</h1>
-                        <p class="text-gray-700">Bem-vindo, <span id="userName" class="font-semibold"></span></p>
+                        <h1 class="text-2xl font-bold text-black">🎲 Rifa Diária</h1>
+                        <p class="text-sm text-gray-700"><span id="userName" class="font-semibold"></span></p>
                     </div>
-                    <div class="flex items-center gap-4">
-                        <div class="text-right">
-                            <p class="text-sm text-gray-700">Saldo Atual</p>
-                            <p class="text-2xl font-bold text-black"><span id="userBalance">500</span> MZN</p>
-                        </div>
-                        <button onclick="logout()" class="bg-black hover:bg-gray-800 text-white px-6 py-2 rounded-lg transition duration-200 font-medium">
-                            Sair
-                        </button>
-                    </div>
+                    <button onclick="logout()" class="bg-black hover:bg-gray-800 text-white px-4 py-2 rounded-lg transition text-sm font-medium">
+                        Sair
+                    </button>
                 </div>
             </div>
 
-            <!-- Contador regressivo atualizado para 3 minutos -->
-            <div class="bg-white rounded-xl shadow-xl p-6 mb-6 fade-in border-2 border-white">
+            <!-- Contador mais compacto -->
+            <div class="bg-white rounded-lg shadow-lg p-4 mb-4 fade-in border-2 border-white">
                 <div class="text-center">
-                    <p class="text-lg mb-2 text-black font-medium">⏰ Próximo Sorteio em:</p>
-                    <p id="countdown" class="text-4xl font-bold pulse-animation text-black">03:00</p>
-                    <p class="text-sm mt-2 text-gray-700">Sorteios automáticos a cada 3 minutos</p>
+                    <p class="text-sm mb-1 text-black font-medium">⏰ Próximo Sorteio</p>
+                    <p id="countdown" class="text-3xl font-bold pulse-animation text-black">03:00</p>
                 </div>
             </div>
 
-            <!-- Seleção de Números -->
-            <div class="bg-white rounded-xl shadow-xl p-6 mb-6 fade-in border-2 border-white">
-                <h2 class="text-2xl font-bold text-black mb-4">Escolha 5 Números (1-100)</h2>
-                <p class="text-gray-700 mb-4">Custo: <span class="font-bold text-black">25 MZN</span> por aposta</p>
+            <!-- Seleção de números mais compacta -->
+            <div class="bg-white rounded-lg shadow-lg p-4 mb-4 fade-in border-2 border-white">
+                <h2 class="text-xl font-bold text-black mb-2">Escolha 5 Números (1-100)</h2>
+                <p class="text-sm text-gray-700 mb-3">Custo: <span class="font-bold text-black">25 MZN</span></p>
                 
-                <div id="numbersGrid" class="grid grid-cols-10 gap-2 mb-6">
+                <div id="numbersGrid" class="grid grid-cols-10 gap-1.5 mb-4">
                     <!-- Números gerados via JavaScript -->
                 </div>
 
-                <div class="flex justify-between items-center flex-wrap gap-4">
+                <div class="flex justify-between items-center flex-wrap gap-3">
                     <div>
-                        <p class="text-black font-medium">Números selecionados: <span id="selectedCount" class="font-bold">0</span>/5</p>
-                        <div id="selectedNumbers" class="flex gap-2 mt-2 flex-wrap"></div>
+                        <p class="text-sm text-black font-medium">Selecionados: <span id="selectedCount" class="font-bold">0</span>/5</p>
+                        <div id="selectedNumbers" class="flex gap-1.5 mt-1.5 flex-wrap"></div>
                     </div>
                     <button id="buyButton" onclick="buyTicket()" disabled
-                            class="bg-black hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold px-8 py-3 rounded-lg transition duration-200">
+                            class="bg-black hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold px-6 py-2 rounded-lg transition text-sm">
                         Comprar Bilhete
                     </button>
                 </div>
             </div>
 
-            <!-- Histórico do Jogador -->
-            <div class="bg-white rounded-xl shadow-xl p-6 mb-6 fade-in border-2 border-white">
-                <h2 class="text-2xl font-bold text-black mb-4">📋 Minhas Apostas</h2>
-                <div id="playerHistory" class="space-y-3">
-                    <p class="text-gray-600 text-center py-4">Nenhuma aposta ainda</p>
+            <!-- Histórico do jogador compacto com scroll e limite de 5 itens -->
+            <div class="bg-white rounded-lg shadow-lg p-4 mb-4 fade-in border-2 border-white">
+                <h2 class="text-xl font-bold text-black mb-3">📋 Minhas Apostas</h2>
+                <div id="playerHistory" class="history-scroll space-y-2">
+                    <p class="text-gray-600 text-center py-3 text-sm">Nenhuma aposta ainda</p>
                 </div>
             </div>
 
-            <!-- Histórico de Sorteios -->
-            <div class="bg-white rounded-xl shadow-xl p-6 fade-in border-2 border-white">
-                <h2 class="text-2xl font-bold text-black mb-4">🏆 Últimos Sorteios</h2>
-                <div id="drawHistory" class="space-y-3">
-                    <p class="text-gray-600 text-center py-4">Nenhum sorteio realizado ainda</p>
+            <!-- Histórico de sorteios compacto -->
+            <div class="bg-white rounded-lg shadow-lg p-4 fade-in border-2 border-white">
+                <h2 class="text-xl font-bold text-black mb-3">🏆 Último Resultado</h2>
+                <div id="drawHistory" class="space-y-2">
+                    <p class="text-gray-600 text-center py-3 text-sm">Nenhum sorteio realizado ainda</p>
                 </div>
             </div>
         </div>
@@ -199,17 +207,41 @@
         </div>
     </div>
 
+    <!-- Modal de Pagamento M-Pesa -->
+    <div id="mpesaModal" class="hidden fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full fade-in border-2 border-black">
+            <div class="text-center">
+                <div class="text-6xl mb-4">📱</div>
+                <h2 class="text-3xl font-bold text-black mb-4">Pagamento M-Pesa</h2>
+                <p class="text-gray-700 mb-2">Valor a pagar:</p>
+                <p class="text-4xl font-bold text-black mb-4">25 MZN</p>
+                <p class="text-sm text-gray-600 mb-6">Digite seu PIN M-Pesa para confirmar</p>
+                
+                <input type="password" id="mpesaPin" maxlength="4" placeholder="****"
+                       class="w-32 mx-auto text-center text-2xl px-4 py-3 rounded-lg border-2 border-black focus:border-gray-600 outline-none text-black mb-6 tracking-widest">
+                
+                <div class="flex gap-3">
+                    <button onclick="cancelMpesaPayment()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-black font-semibold px-6 py-3 rounded-lg transition duration-200 border-2 border-black">
+                        Cancelar
+                    </button>
+                    <button onclick="confirmMpesaPayment()" class="flex-1 bg-black hover:bg-gray-800 text-white font-semibold px-6 py-3 rounded-lg transition duration-200">
+                        Confirmar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // ========== CONSTANTES E VARIÁVEIS GLOBAIS ==========
         const TICKET_COST = 25;
-        const INITIAL_BALANCE = 500;
         const DRAW_INTERVAL = 180; // 3 minutos em segundos
         
         let currentUser = null;
         let selectedNumbers = [];
-        let balance = INITIAL_BALANCE;
         let nextDrawTime = null;
         let countdownInterval = null;
+        let pendingPurchase = null; // Para armazenar compra pendente durante pagamento
 
         // ========== FUNÇÕES DE AUTENTICAÇÃO ==========
         
@@ -232,7 +264,7 @@
             localStorage.setItem('rifa_users_v1', JSON.stringify(users));
             
             // Inicializar saldo do novo usuário
-            localStorage.setItem(`rifa_balance_${mpesa}`, INITIAL_BALANCE.toString());
+            localStorage.setItem(`rifa_balance_${mpesa}`, TICKET_COST.toString());
             
             alert('Conta criada com sucesso! Faça login para continuar.');
             toggleAuthForm();
@@ -256,7 +288,7 @@
             sessionStorage.setItem('rifa_session', JSON.stringify(currentUser));
             
             // Carregar saldo do usuário
-            balance = parseInt(localStorage.getItem(`rifa_balance_${mpesa}`) || INITIAL_BALANCE);
+            const balance = parseInt(localStorage.getItem(`rifa_balance_${mpesa}`) || TICKET_COST);
             
             showRifaScreen();
             return true;
@@ -277,7 +309,6 @@
             document.getElementById('authScreen').classList.add('hidden');
             document.getElementById('rifaScreen').classList.remove('hidden');
             document.getElementById('userName').textContent = currentUser.name;
-            updateBalance();
             generateNumbersGrid();
             initializeDrawSystem();
             loadPlayerHistory();
@@ -293,7 +324,7 @@
             for (let i = 1; i <= 100; i++) {
                 const button = document.createElement('button');
                 button.textContent = i;
-                button.className = 'ticket-hover bg-white hover:bg-black hover:text-white text-black font-semibold py-3 rounded-lg transition duration-200 border-2 border-black';
+                button.className = 'ticket-hover bg-white hover:bg-black hover:text-white text-black font-semibold py-2 text-sm rounded-lg transition duration-200 border-2 border-black';
                 button.onclick = () => toggleNumber(i, button);
                 grid.appendChild(button);
             }
@@ -325,7 +356,7 @@
             
             const container = document.getElementById('selectedNumbers');
             container.innerHTML = selectedNumbers.map(num => 
-                `<span class="bg-black text-white px-3 py-1 rounded-full font-semibold border-2 border-black">${num}</span>`
+                `<span class="bg-black text-white px-2 py-0.5 rounded-full font-semibold text-xs border border-black">${num}</span>`
             ).join('');
 
             document.getElementById('buyButton').disabled = selectedNumbers.length !== 5;
@@ -337,22 +368,43 @@
                 return;
             }
 
-            if (balance < TICKET_COST) {
-                alert('Saldo insuficiente!');
+            pendingPurchase = {
+                numbers: [...selectedNumbers],
+                timestamp: new Date().toISOString()
+            };
+            
+            showMpesaModal();
+        }
+
+        function showMpesaModal() {
+            document.getElementById('mpesaModal').classList.remove('hidden');
+            document.getElementById('mpesaPin').value = '';
+            document.getElementById('mpesaPin').focus();
+        }
+
+        function cancelMpesaPayment() {
+            document.getElementById('mpesaModal').classList.add('hidden');
+            pendingPurchase = null;
+        }
+
+        function confirmMpesaPayment() {
+            const pin = document.getElementById('mpesaPin').value;
+            
+            if (pin.length !== 4) {
+                alert('Digite um PIN de 4 dígitos!');
                 return;
             }
 
-            // Deduzir saldo
-            balance -= TICKET_COST;
-            updateBalance();
-
-            // Salvar compra pendente
+            // Simular processamento
+            document.getElementById('mpesaModal').classList.add('hidden');
+            
+            // Processar compra
             const purchases = JSON.parse(localStorage.getItem('rifa_purchases_v1') || '[]');
             const purchase = {
                 id: Date.now(),
                 user: currentUser.mpesa,
-                numbers: [...selectedNumbers],
-                timestamp: new Date().toISOString(),
+                numbers: pendingPurchase.numbers,
+                timestamp: pendingPurchase.timestamp,
                 cost: TICKET_COST
             };
             purchases.push(purchase);
@@ -362,15 +414,13 @@
             showPurchaseModal();
 
             // Resetar seleção
+            const numbersToShow = [...selectedNumbers];
             selectedNumbers = [];
             generateNumbersGrid();
             updateSelectedDisplay();
             loadPlayerHistory();
-        }
-
-        function updateBalance() {
-            document.getElementById('userBalance').textContent = balance;
-            localStorage.setItem(`rifa_balance_${currentUser.mpesa}`, balance.toString());
+            
+            pendingPurchase = null;
         }
 
         // ========== FUNÇÕES DE SORTEIO ==========
@@ -437,7 +487,6 @@
 
             // Verificar vencedores
             const results = [];
-            const balanceUpdates = {};
 
             purchases.forEach(purchase => {
                 const matches = purchase.numbers.filter(num => drawnNumbers.includes(num)).length;
@@ -459,27 +508,6 @@
                     prize,
                     status
                 });
-
-                // Acumular prêmios por usuário
-                if (prize > 0) {
-                    if (!balanceUpdates[purchase.user]) {
-                        balanceUpdates[purchase.user] = 0;
-                    }
-                    balanceUpdates[purchase.user] += prize;
-                }
-            });
-
-            // Atualizar saldos de todos os usuários
-            Object.keys(balanceUpdates).forEach(userMpesa => {
-                const currentBalance = parseInt(localStorage.getItem(`rifa_balance_${userMpesa}`) || INITIAL_BALANCE);
-                const newBalance = currentBalance + balanceUpdates[userMpesa];
-                localStorage.setItem(`rifa_balance_${userMpesa}`, newBalance.toString());
-
-                // Se for o usuário atual, atualizar na tela
-                if (currentUser && userMpesa === currentUser.mpesa) {
-                    balance = newBalance;
-                    updateBalance();
-                }
             });
 
             // Salvar histórico do sorteio
@@ -544,40 +572,40 @@
             const container = document.getElementById('playerHistory');
 
             if (userHistory.length === 0 && userPendingBets.length === 0) {
-                container.innerHTML = '<p class="text-gray-600 text-center py-4">Nenhuma aposta ainda</p>';
+                container.innerHTML = '<p class="text-gray-600 text-center py-3 text-sm">Nenhuma aposta ainda</p>';
                 return;
             }
 
             let html = '';
 
-            // Mostrar apostas pendentes primeiro
+            // Mostrar apostas pendentes primeiro (máximo 3)
             if (userPendingBets.length > 0) {
-                html += userPendingBets.map(bet => `
-                    <div class="border-2 border-black rounded-lg p-4 bg-yellow-50">
-                        <div class="flex justify-between items-start mb-2">
+                html += userPendingBets.slice(0, 3).map(bet => `
+                    <div class="border-2 border-black rounded-lg p-3 bg-yellow-50">
+                        <div class="flex justify-between items-start mb-1">
                             <div>
-                                <p class="text-sm text-gray-700">${new Date(bet.timestamp).toLocaleString('pt-BR')}</p>
-                                <p class="font-semibold text-black">Meus números: ${bet.numbers.join(', ')}</p>
+                                <p class="text-xs text-gray-700">${new Date(bet.timestamp).toLocaleString('pt-BR', {day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit'})}</p>
+                                <p class="font-semibold text-black text-sm">Números: ${bet.numbers.join(', ')}</p>
                             </div>
-                            <span class="px-3 py-1 rounded-full text-sm font-semibold bg-yellow-400 text-black border-2 border-black">
-                                ⏳ Aguardando Sorteio
+                            <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-yellow-400 text-black border border-black">
+                                ⏳ Aguardando
                             </span>
                         </div>
-                        <p class="text-sm text-black">Custo: <span class="font-bold">${bet.cost} MZN</span></p>
                     </div>
                 `).join('');
             }
 
-            // Mostrar histórico de resultados
-            html += userHistory.slice(0, 10).map(entry => `
-                <div class="border-2 border-black rounded-lg p-4 bg-white">
-                    <div class="flex justify-between items-start mb-2">
-                        <div>
-                            <p class="text-sm text-gray-700">${new Date(entry.timestamp).toLocaleString('pt-BR')}</p>
-                            <p class="font-semibold text-black">Meus números: ${entry.myNumbers.join(', ')}</p>
-                            <p class="text-sm text-gray-700">Sorteados: ${entry.drawnNumbers.join(', ')}</p>
+            // Mostrar histórico de resultados (máximo 5 total incluindo pendentes)
+            const remainingSlots = 5 - userPendingBets.slice(0, 3).length;
+            html += userHistory.slice(0, remainingSlots).map(entry => `
+                <div class="border-2 border-black rounded-lg p-3 bg-white">
+                    <div class="flex justify-between items-start mb-1">
+                        <div class="flex-1">
+                            <p class="text-xs text-gray-700">${new Date(entry.timestamp).toLocaleString('pt-BR', {day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit'})}</p>
+                            <p class="font-semibold text-black text-sm">Meus: ${entry.myNumbers.join(', ')}</p>
+                            <p class="text-xs text-gray-700">Sorteio: ${entry.drawnNumbers.join(', ')}</p>
                         </div>
-                        <span class="px-3 py-1 rounded-full text-sm font-semibold border-2 ${
+                        <span class="px-2 py-0.5 rounded-full text-xs font-semibold border ${
                             entry.status === 'GANHOU!' ? 'bg-black text-white border-black' :
                             entry.status === 'Reembolso' ? 'bg-white text-black border-black' :
                             'bg-gray-200 text-gray-700 border-gray-400'
@@ -585,7 +613,7 @@
                             ${entry.status}
                         </span>
                     </div>
-                    <p class="text-sm text-black">Acertos: <span class="font-bold">${entry.matches}</span> | Prêmio: <span class="font-bold">${entry.prize} MZN</span></p>
+                    <p class="text-xs text-black">Acertos: <span class="font-bold">${entry.matches}</span> | Prêmio: <span class="font-bold">${entry.prize} MZN</span></p>
                 </div>
             `).join('');
 
@@ -597,38 +625,37 @@
             const container = document.getElementById('drawHistory');
 
             if (history.length === 0) {
-                container.innerHTML = '<p class="text-gray-600 text-center py-4">Nenhum sorteio realizado ainda</p>';
+                container.innerHTML = '<p class="text-gray-600 text-center py-3 text-sm">Nenhum sorteio realizado ainda</p>';
                 return;
             }
 
-            container.innerHTML = history.slice(0, 3).map(draw => {
-                const winners = draw.results.filter(r => r.prize > 0);
-                const totalPrizes = winners.reduce((sum, r) => sum + r.prize, 0);
-                
-                return `
-                    <div class="border-2 border-black rounded-lg p-4 bg-white">
-                        <div class="flex justify-between items-start mb-2">
-                            <div>
-                                <p class="text-sm text-gray-700 mb-1">${new Date(draw.timestamp).toLocaleString('pt-BR')}</p>
-                                <p class="font-bold text-black text-lg">Números: ${draw.numbers.join(', ')}</p>
-                            </div>
-                            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-black text-white border-2 border-black">
-                                ${draw.totalBets || draw.results.length} aposta(s)
-                            </span>
+            const draw = history[0];
+            const winners = draw.results.filter(r => r.prize > 0);
+            const totalPrizes = winners.reduce((sum, r) => sum + r.prize, 0);
+            
+            container.innerHTML = `
+                <div class="border-2 border-black rounded-lg p-4 bg-white">
+                    <div class="mb-2">
+                        <p class="text-xs text-gray-700 mb-1">${new Date(draw.timestamp).toLocaleString('pt-BR', {day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit'})}</p>
+                        <p class="font-bold text-black text-lg">Números Sorteados:</p>
+                        <div class="flex gap-2 mt-2 flex-wrap">
+                            ${draw.numbers.map(num => `
+                                <span class="bg-black text-white px-4 py-2 rounded-full font-bold text-lg border-2 border-black">${num}</span>
+                            `).join('')}
                         </div>
-                        ${winners.length > 0 ? `
-                            <div class="mt-2 pt-2 border-t-2 border-gray-200">
-                                <p class="text-sm text-gray-700">
-                                    <span class="font-semibold text-black">${winners.length}</span> vencedor(es) | 
-                                    Prêmios: <span class="font-bold text-black">${totalPrizes} MZN</span>
-                                </p>
-                            </div>
-                        ` : `
-                            <p class="text-sm text-gray-600 mt-2">Nenhum vencedor neste sorteio</p>
-                        `}
                     </div>
-                `;
-            }).join('');
+                    ${winners.length > 0 ? `
+                        <div class="mt-3 pt-3 border-t-2 border-gray-200">
+                            <p class="text-sm text-gray-700">
+                                <span class="font-semibold text-black">${winners.length}</span> vencedor(es) | 
+                                Prêmios: <span class="font-bold text-black">${totalPrizes} MZN</span>
+                            </p>
+                        </div>
+                    ` : `
+                        <p class="text-sm text-gray-600 mt-3 pt-3 border-t-2 border-gray-200">Nenhum vencedor neste sorteio</p>
+                    `}
+                </div>
+            `;
         }
 
         // ========== FUNÇÕES DE MODAL ==========
@@ -637,7 +664,7 @@
             const modal = document.getElementById('purchaseModal');
             const numbersContainer = document.getElementById('purchasedNumbers');
             
-            numbersContainer.innerHTML = selectedNumbers.map(num => 
+            numbersContainer.innerHTML = pendingPurchase.numbers.map(num => 
                 `<span class="bg-black text-white px-4 py-2 rounded-full font-bold text-lg border-2 border-black">${num}</span>`
             ).join('');
             
@@ -703,7 +730,6 @@
             const session = sessionStorage.getItem('rifa_session');
             if (session) {
                 currentUser = JSON.parse(session);
-                balance = parseInt(localStorage.getItem(`rifa_balance_${currentUser.mpesa}`) || INITIAL_BALANCE);
                 showRifaScreen();
             }
         });
